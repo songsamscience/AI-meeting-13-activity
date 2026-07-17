@@ -215,6 +215,18 @@
   .chk:has(input:checked){background:var(--brand-soft); border-color:#b9cbf7}
   .chk input{margin-top:4px; accent-color:var(--brand); width:16px; height:16px}
 
+  /* ── 참고 링크 ──────────────────────── */
+  .links{display:flex; flex-direction:column; gap:8px; margin-top:12px}
+  .links a{display:flex; gap:9px; align-items:center; font-size:13.5px; color:var(--brand);
+    text-decoration:none; background:#f8fafd; border:1px solid var(--line); border-radius:10px;
+    padding:9px 13px; font-weight:650; transition:.13s; word-break:break-all}
+  .links a:hover{border-color:var(--brand); background:var(--brand-soft)}
+  .links a::before{content:"🔗"; font-size:12px; flex:none}
+  .links a small{color:#9aa3b8; font-weight:500; margin-left:auto; flex:none}
+  .hours{display:inline-block; font-size:12px; font-weight:800; color:#fff; padding:2px 11px;
+    border-radius:999px; margin-left:8px; vertical-align:middle;
+    background:linear-gradient(135deg,var(--accent),#27bfa9)}
+
   /* ── 마무리 ─────────────────────────── */
   .closing{position:relative; overflow:hidden;
     background:linear-gradient(135deg,#0f9d8b,#0b7a6c 70%); color:#fff; border:none}
@@ -324,6 +336,7 @@
     <button class="tab" data-t="a2">활동 2<small>26차시 · 역량 심층 진단</small></button>
     <button class="tab" data-t="a3">활동 3<small>27차시 · 경로 설계</small></button>
     <button class="tab" data-t="a4">활동 4<small>27차시 · 후속 연계·마무리</small></button>
+    <button class="tab" data-t="a5">후속 연수<small>터치교사단·사회정서·AIEDAP</small></button>
   </div>
 </nav>
 
@@ -1292,6 +1305,104 @@
 
 </section>
 
+<!-- ════════════════════════════ 후속 연수 안내 ════════════════════════════ -->
+<section class="lesson" data-lesson="a5">
+
+  <div class="section-head">
+    <div class="num green">＋</div>
+    <div class="tx">
+      <div class="step">부록 · 후속 전문분야 연수 안내 ('26.9월~)</div>
+      <h2>연수 이후, 더 깊이 — 후속 연수 3종</h2>
+      <p>활동2에서 메모한 관심 분야, 활동3 로드맵의 우선순위 역량과 연결해 살펴보세요.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">p.87~88 · 후속 전문분야 연수 한눈에 보기</span>
+    <h3>무엇을 고를까 — 나의 성장 목표가 기준입니다</h3>
+    <div class="ctx"><ul>
+      <li>강점 역량을 <b>더 살릴</b> 분야인가? 보완 역량을 <b>채워 줄</b> 분야인가?</li>
+      <li>내 로드맵의 우선순위 역량과 가장 가까운 후속 연수를 고릅니다.</li>
+      <li>한 번에 다 하려 하지 말고, 올해의 <b>'한 걸음'</b>으로 하나만 선택해도 충분합니다.</li>
+    </ul></div>
+    <table>
+      <thead><tr><th style="width:44%">과정</th><th style="width:90px">시수</th><th>이런 선생님께 추천</th></tr></thead>
+      <tbody>
+        <tr><td class="k" style="white-space:normal">① 인공지능 활용 선도교사 후속전문연수<br>(구 터치교사단)</td><td>21H</td><td style="font-size:13.5px">E(실행)·G(전문성) 강점을 살려 동료 연수 강사·수업혁신 리더로 확장하고 싶은 분</td></tr>
+        <tr><td class="k" style="white-space:normal">② 사회정서교육 선도교사 양성 연수</td><td>15H</td><td style="font-size:13.5px">학생 주도성·사회정서학습, 관계와 마음건강 중심 수업에 관심 있는 분</td></tr>
+        <tr><td class="k" style="white-space:normal">③ AIEDAP 마스터교원 양성 연수</td><td>35H 내외</td><td style="font-size:13.5px">C(분석)·D(설계)를 심화해 AI 융합수업 연구·교수학습 모형 개발까지 나아가고 싶은 분</td></tr>
+      </tbody>
+    </table>
+    <p class="lead" style="margin-top:10px">※ 아래 소개는 2026년 7월 공개 자료 조사 기준입니다. 모집 시기·시수·명칭은 공고에 따라 달라질 수 있으니, 신청 전 반드시 최신 공고를 확인하세요.</p>
+  </div>
+
+  <div class="card">
+    <span class="src">① 후속전문연수 (구 터치교사단)<span class="hours">21H</span></span>
+    <h3>T.O.U.C.H. 교사단 — Teachers who Upgrade Class with High-tech</h3>
+    <div class="ctx"><ul>
+      <li>교육부·17개 시도교육청·KERIS가 함께 운영해 온 <b>디지털 기반 수업혁신 선도 교사그룹</b> 연수입니다.</li>
+      <li>지향점은 <b>'하이터치 하이테크(High-touch High-tech)'</b> — 첨단 기술로 맞춤 교육을 구현하고, 인간적인 연결로 학생의 성장을 이끄는 교사.</li>
+      <li>소규모 교실 단위의 <b>모둠 중심 과제 기반 활동·토론·수업 실연</b>으로 AI 코스웨어·디지털 도구 활용 수업지도안을 연구하고 공유합니다.</li>
+      <li>수료 후에는 교원연수 강사 활동, 디지털 기반 수업혁신 확산, 관련 정책 참여 등의 역할로 이어집니다.</li>
+    </ul></div>
+    <div class="links">
+      <a href="https://www.korea.kr/news/policyNewsView.do?newsId=148918069" target="_blank" rel="noopener">터치 교사단 소개 기사 — 대한민국 정책브리핑<small>korea.kr</small></a>
+      <a href="https://www.keris.or.kr" target="_blank" rel="noopener">한국교육학술정보원(KERIS) 누리집<small>keris.or.kr</small></a>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">② 사회정서교육 선도교사 양성 연수<span class="hours">15H</span></span>
+    <h3>학생 마음건강을 지키는 학교 기반 보편적 교육</h3>
+    <div class="ctx"><ul>
+      <li><b>사회정서교육(SEL)</b> — 학생의 긍정적 성장과 정신건강 증진을 목표로 사회정서역량을 기르는 학교 기반 보편적 마음건강 교육입니다.</li>
+      <li>핵심역량 4가지 — <b>자기감정 인식·관리, 관계 인식·관리, 공동체 가치 인식·관리, 정신건강 인식·관리</b>.</li>
+      <li>2026학년도부터 <b>모든 학교로 확대</b> — 전국 선도교사 양성(방학 중 집중 연수), 교사연구회·현장지원단 운영.</li>
+      <li>학교급별 발달단계에 맞춘 교육콘텐츠(숏폼·카드뉴스·영상 등 140여 종)가 함께 보급됩니다.</li>
+    </ul></div>
+    <div class="links">
+      <a href="https://www.moe.go.kr" target="_blank" rel="noopener">교육부 누리집 — 사회정서교육 보도자료<small>moe.go.kr</small></a>
+      <a href="https://www.togetherschool.go.kr" target="_blank" rel="noopener">함께학교 플랫폼 — 관련 공지·콘텐츠<small>togetherschool.go.kr</small></a>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">③ AIEDAP 마스터교원 양성 연수<span class="hours">35H 내외</span></span>
+    <h3>AIEDAP(아이에답) — AI 융합교육 전문가 성장 사다리</h3>
+    <div class="ctx"><ul>
+      <li><b>AIEDAP(AI EDucation Alliance &amp; Policy lab)</b> — 교육부·시도교육청·대학이 연합한 AI 융합교육 지원 사업으로, 전국 5개 권역 사업지원단(거점 대학)이 운영합니다.</li>
+      <li><b>일반교원 → 리더교원 → 마스터교원</b>으로 이어지는 승급형 성장 경로 — 리더교원 기본 연수 후 승급 연수를 거쳐 마스터교원이 됩니다.</li>
+      <li>마스터교원의 역할 — 일반교원 대상 AI·디지털 연수 강사, 현장 실천형 교수학습 모형 개발, 교사학습공동체(PLC) 운영.</li>
+      <li>역량 진단·포트폴리오·AI 융합수업 사례 등 AIEDAP 플랫폼 기능도 함께 활용할 수 있습니다.</li>
+    </ul></div>
+    <div class="links">
+      <a href="https://aiedap.or.kr" target="_blank" rel="noopener">AIEDAP 공식 누리집 — 연수 안내·신청<small>aiedap.or.kr</small></a>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">나의 선택 메모</span>
+    <h3>참고 자료를 살펴보고, 나의 다음 연수를 메모해 둡니다</h3>
+    <div style="margin-bottom:14px">
+      <label class="fld">지금 가장 끌리는 후속 연수와 그 이유 (나의 강점·보완 역량과 연결)</label>
+      <textarea data-k="a5_interest" data-q="가장 끌리는 후속 연수와 그 이유" style="min-height:56px" placeholder="예) AIEDAP 마스터교원 — C 분석 역량을 심화해 수업 모형 개발까지 해 보고 싶어서"></textarea>
+    </div>
+    <div>
+      <label class="fld">신청 전 확인·준비할 것</label>
+      <textarea data-k="a5_todo" data-q="신청 전 확인·준비할 것" style="min-height:56px" placeholder="예) 9월 모집 공고 시기 확인, 학교 관리자와 협의, 로드맵 중기 계획에 반영"></textarea>
+    </div>
+  </div>
+
+  <div class="card closing">
+    <span class="src">p.89 · 개인별 후속 지원 체계</span>
+    <h2>혼자가 아닙니다 — 함께 가는 성장</h2>
+    <p>후속 연수와 함께 <b>멘토 매칭</b>(터치교사단·AIEDAP 마스터교원 등 후속 분야 멘토 연결), 오늘 맺은 <b>성장 메이트</b>, 관심 주제별 <b>자율적 교사학습공동체(PLC)</b> 구성 지원이 이어집니다.</p>
+    <p>선택한 후속 연수는 포트폴리오 '전문성 개발 경로 탐색' 칸과 성장 로드맵의 <b>중기·장기 계획</b>에 함께 적어 두세요. 모집 공고는 소속 교육청 공문과 각 사업 누리집에서 확인할 수 있습니다.</p>
+    <div class="flow">올해의 '한 걸음' — 하나만 선택해도 충분합니다</div>
+  </div>
+
+</section>
+
   <div class="site-foot">
     2026년 인공지능 활용 선도교사 연수 · 집합⑬ AI·디지털 역량 진단 및 전문성 개발 경로 설계<br>
     출처 : 인공지능활용 선도교사 연수 1권역 교안<br>
@@ -1408,7 +1519,8 @@
     "a1":{chasi:"25차시", act:"활동 1", name:"1번~12번 연수 돌아보기", file:"활동1_돌아보기"},
     "a2":{chasi:"26차시", act:"활동 2", name:"AI·디지털 역량 심층 진단", file:"활동2_심층진단"},
     "a3":{chasi:"27차시", act:"활동 3", name:"맞춤형 전문성 개발 경로 설계", file:"활동3_경로설계"},
-    "a4":{chasi:"27차시", act:"활동 4", name:"후속 연수·지원 연계 및 연수 마무리", file:"활동4_마무리"}
+    "a4":{chasi:"27차시", act:"활동 4", name:"후속 연수·지원 연계 및 연수 마무리", file:"활동4_마무리"},
+    "a5":{chasi:"부록", act:"후속 연수 안내", name:"터치교사단 · 사회정서교육 선도교사 · AIEDAP 마스터교원", file:"후속연수안내"}
   };
   function showLesson(n){
     if(!LESSON_TITLE[n]) n = "a1";
@@ -1713,8 +1825,39 @@
     return out + close;
   }
 
+  /* ── 후속 연수 안내 PDF (부록) ────────── */
+  function build5(){
+    let out = "";
+    out += `<div class="p-sec">후속 전문분야 연수 한눈에 보기 ('26.9월~)</div>
+      <div class="p-item"><table><thead><tr><th style="width:42%">과정</th><th style="width:12%">시수</th><th>이런 선생님께 추천</th></tr></thead><tbody>
+        <tr><td>① 인공지능 활용 선도교사 후속전문연수 (구 터치교사단)</td><td>21H</td><td>E(실행)·G(전문성) 강점을 살려 동료 연수 강사·수업혁신 리더로 확장하고 싶은 분</td></tr>
+        <tr><td>② 사회정서교육 선도교사 양성 연수</td><td>15H</td><td>학생 주도성·사회정서학습, 관계와 마음건강 중심 수업에 관심 있는 분</td></tr>
+        <tr><td>③ AIEDAP 마스터교원 양성 연수</td><td>35H 내외</td><td>C(분석)·D(설계)를 심화해 AI 융합수업 연구·교수학습 모형 개발까지 나아가고 싶은 분</td></tr>
+      </tbody></table></div>
+      <div class="p-item"><p class="p-a">선택 기준 — 강점 역량을 더 살릴 분야인가? 보완 역량을 채워 줄 분야인가? 내 로드맵의 우선순위 역량과 가장 가까운 것. 한 번에 다 하려 하지 말고, 올해의 '한 걸음'으로 하나만 선택해도 충분합니다.\n※ 2026년 7월 공개 자료 조사 기준이며, 모집 시기·시수·명칭은 공고에 따라 달라질 수 있습니다.</p></div>`;
+
+    out += `<div class="p-sec">① 인공지능 활용 선도교사 후속전문연수 (구 터치교사단) · 21H</div>
+      <div class="p-item"><p class="p-a">T.O.U.C.H. 교사단(Teachers who Upgrade Class with High-tech) — 교육부·17개 시도교육청·KERIS가 함께 운영해 온 디지털 기반 수업혁신 선도 교사그룹 연수. '하이터치 하이테크' — 첨단 기술로 맞춤 교육을 구현하고 인간적인 연결로 학생의 성장을 이끄는 교사를 지향합니다. 소규모 교실 단위의 모둠 중심 과제 기반 활동·토론·수업 실연으로 AI 코스웨어·디지털 도구 활용 수업지도안을 연구·공유하며, 수료 후 교원연수 강사·수업혁신 확산·정책 참여 역할로 이어집니다.\n\n[참고 자료]\n· 대한민국 정책브리핑 터치 교사단 소개 : www.korea.kr/news/policyNewsView.do?newsId=148918069\n· 한국교육학술정보원(KERIS) : www.keris.or.kr</p></div>`;
+
+    out += `<div class="p-sec">② 사회정서교육 선도교사 양성 연수 · 15H</div>
+      <div class="p-item"><p class="p-a">사회정서교육(SEL) — 학생의 긍정적 성장과 정신건강 증진을 목표로 사회정서역량을 기르는 학교 기반 보편적 마음건강 교육. 핵심역량은 자기감정 인식·관리, 관계 인식·관리, 공동체 가치 인식·관리, 정신건강 인식·관리의 4가지입니다. 2026학년도부터 모든 학교로 확대되며, 전국 선도교사 양성(방학 중 집중 연수)과 교사연구회·현장지원단 운영, 학교급별 교육콘텐츠(숏폼·카드뉴스·영상 등 140여 종) 보급이 함께 진행됩니다.\n\n[참고 자료]\n· 교육부 누리집(보도자료) : www.moe.go.kr\n· 함께학교 플랫폼 : www.togetherschool.go.kr</p></div>`;
+
+    out += `<div class="p-sec">③ AIEDAP 마스터교원 양성 연수 · 35H 내외</div>
+      <div class="p-item"><p class="p-a">AIEDAP(AI EDucation Alliance &amp; Policy lab, 아이에답) — 교육부·시도교육청·대학이 연합한 AI 융합교육 지원 사업으로, 전국 5개 권역 사업지원단(거점 대학)이 운영합니다. 일반교원 → 리더교원 → 마스터교원으로 이어지는 승급형 성장 경로이며, 마스터교원은 일반교원 대상 AI·디지털 연수 강사, 현장 실천형 교수학습 모형 개발, 교사학습공동체(PLC) 운영 역할을 합니다. 역량 진단·포트폴리오·AI 융합수업 사례 등 플랫폼 기능도 함께 활용할 수 있습니다.\n\n[참고 자료]\n· AIEDAP 공식 누리집 : aiedap.or.kr</p></div>`;
+
+    const memo = qa("a5_interest") + qa("a5_todo");
+    out += sec("나의 선택 메모", memo);
+
+    const close =
+      `<div class="p-close"><h3>혼자가 아닙니다 — 함께 가는 성장</h3>
+        <p>후속 연수와 함께 <b>멘토 매칭</b>(터치교사단·AIEDAP 마스터교원 등 후속 분야 멘토 연결), <b>성장 메이트</b>, 관심 주제별 <b>자율적 교사학습공동체(PLC)</b> 구성 지원이 이어집니다.</p>
+        <p>선택한 후속 연수는 포트폴리오 '전문성 개발 경로 탐색' 칸과 성장 로드맵의 중기·장기 계획에 함께 적어 두세요. 모집 공고는 소속 교육청 공문과 각 사업 누리집에서 확인할 수 있습니다.</p>
+        <div class="flow">올해의 '한 걸음' — 하나만 선택해도 충분합니다</div></div>`;
+    return out + close;
+  }
+
   /* ── PDF 버튼 ─────────────────────────── */
-  const BUILDERS = {"a1":build25, "a2":build26, "a3":build3, "a4":build4};
+  const BUILDERS = {"a1":build25, "a2":build26, "a3":build3, "a4":build4, "a5":build5};
 
   document.getElementById("btn-pdf").addEventListener("click", ()=>{
     const school = val("school"), name = val("name");
