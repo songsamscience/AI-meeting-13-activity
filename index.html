@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI·디지털 역량 진단 및 전문성 개발 경로 설계 · 활동</title>
+<style>
+  :root{
+    --bg:#eef1f8;
+    --card:#ffffff;
+    --ink:#1a2138;
+    --ink-soft:#5b6479;
+    --line:#e3e7f0;
+    --brand:#3457d5;
+    --brand-deep:#16305e;
+    --brand-soft:#ecf1ff;
+    --accent:#0f9d8b;
+    --accent-deep:#0b7a6c;
+    --warn:#d9822b;
+    --radius:18px;
+    --shadow:0 2px 6px rgba(22,48,94,.06), 0 12px 32px -14px rgba(22,48,94,.12);
+    --shadow-hover:0 4px 10px rgba(22,48,94,.08), 0 18px 44px -14px rgba(22,48,94,.18);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic","맑은 고딕",system-ui,sans-serif;
+    line-height:1.7; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px; margin:0 auto; padding:0 20px 130px}
+
+  /* ── 헤더 ───────────────────────────── */
+  header.hero{
+    position:relative; overflow:hidden; color:#fff;
+    background:linear-gradient(130deg,#1b3a8f 0%,#3457d5 55%,#4f74e8 100%);
+    padding:48px 20px 46px;
+  }
+  header.hero::before{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:
+      radial-gradient(circle at 85% 15%, rgba(255,255,255,.16), transparent 42%),
+      radial-gradient(circle at 8% 90%, rgba(255,255,255,.10), transparent 38%),
+      radial-gradient(circle at 70% 110%, rgba(15,157,139,.35), transparent 45%);
+  }
+  header.hero::after{
+    content:""; position:absolute; inset:0; pointer-events:none; opacity:.35;
+    background-image:
+      linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
+    background-size:44px 44px;
+    mask-image:linear-gradient(to bottom, transparent, #000 30%, #000 70%, transparent);
+  }
+  .hero-in{max-width:960px; margin:0 auto; position:relative; z-index:1}
+  .badge{
+    display:inline-flex; align-items:center; gap:7px;
+    background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.35);
+    padding:6px 15px; border-radius:999px; font-size:13px; letter-spacing:.02em; font-weight:600;
+    backdrop-filter:blur(4px);
+  }
+  .badge::before{content:""; width:7px; height:7px; border-radius:50%; background:#7ef0dd;
+    box-shadow:0 0 8px 2px rgba(126,240,221,.7)}
+  .hero h1{margin:14px 0 8px; font-size:clamp(22px,3.6vw,31px); line-height:1.35; font-weight:800; letter-spacing:-.01em}
+  .hero h1 .hl{color:#a8f5e8}
+  .hero p.sub{margin:0 0 18px; opacity:.92; font-size:15px}
+  .hero .flowchips{display:flex; flex-wrap:wrap; gap:8px; align-items:center; font-size:13px; font-weight:700}
+  .hero .flowchips .fc{
+    background:rgba(255,255,255,.13); border:1px solid rgba(255,255,255,.28);
+    border-radius:999px; padding:5px 13px; backdrop-filter:blur(4px);
+  }
+  .hero .flowchips .arw{opacity:.65}
+  .hero .credit{margin-top:14px; font-size:12.5px; opacity:.85; font-weight:600; letter-spacing:.02em; text-align:right}
+
+  /* ── 차시 탭 ─────────────────────────── */
+  .tabs{
+    position:sticky; top:0; z-index:45; background:rgba(255,255,255,.94);
+    backdrop-filter:blur(10px); border-bottom:1px solid var(--line);
+    box-shadow:0 4px 18px -8px rgba(22,48,94,.14);
+    margin-bottom:30px;
+  }
+  .tabs-in{max-width:960px; margin:0 auto; padding:0 20px; display:flex; gap:6px}
+  .tab{
+    flex:1; border:none; background:transparent; border-radius:0;
+    padding:15px 6px 12px; font-size:15px; font-weight:750; color:var(--ink-soft);
+    border-bottom:3px solid transparent; cursor:pointer; transition:.14s;
+    display:flex; flex-direction:column; align-items:center; gap:1px;
+  }
+  .tab small{font-size:11.5px; font-weight:600; opacity:.75}
+  .tab:hover{color:var(--brand)}
+  .tab.on{color:var(--brand); border-bottom-color:var(--brand)}
+  @media(max-width:720px){ .tab{font-size:13.5px} .tab small{display:none} }
+
+  .lesson{display:none}
+  .lesson.on{display:block; animation:fadein .25s ease}
+  @keyframes fadein{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none}}
+
+  /* ── 카드 공통 ──────────────────────── */
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:26px 26px 28px; margin-bottom:22px; box-shadow:var(--shadow);
+    transition:box-shadow .18s;
+  }
+  .card:hover{box-shadow:var(--shadow-hover)}
+  .card h2{margin:0 0 4px; font-size:20px; font-weight:800; letter-spacing:-.01em}
+  .card h3{margin:0 0 6px; font-size:17.5px; font-weight:750; letter-spacing:-.01em}
+  .src{
+    display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--brand);
+    background:var(--brand-soft); border:1px solid #dbe5ff;
+    border-radius:999px; padding:3px 12px; margin-bottom:12px; font-weight:700; letter-spacing:.01em;
+  }
+  .src::before{content:"📄"; font-size:11px}
+  .lead{color:var(--ink-soft); font-size:14px; margin:0 0 14px}
+
+  /* ── 섹션 구분 ──────────────────────── */
+  .section-head{margin:44px 0 18px; display:flex; gap:16px; align-items:flex-start}
+  .section-head .num{
+    flex:none; width:46px; height:46px; border-radius:14px; display:grid; place-items:center;
+    background:linear-gradient(135deg,var(--brand),#5b7cf0); color:#fff; font-weight:800; font-size:17px;
+    box-shadow:0 6px 16px -6px rgba(52,87,213,.55);
+  }
+  .section-head .num.green{background:linear-gradient(135deg,var(--accent),#27bfa9);
+    box-shadow:0 6px 16px -6px rgba(15,157,139,.55)}
+  .section-head .tx .step{font-size:12.5px; font-weight:800; color:var(--brand); letter-spacing:.08em; text-transform:uppercase}
+  .section-head .tx h2{margin:1px 0 4px; font-size:23px; font-weight:800; letter-spacing:-.01em}
+  .section-head .tx p{margin:0; color:var(--ink-soft); font-size:14px}
+
+  /* ── 입력 ───────────────────────────── */
+  label.fld{display:block; font-size:14px; font-weight:750; margin:0 0 7px}
+  input[type=text], textarea, select{
+    width:100%; border:1.5px solid var(--line); border-radius:12px; background:#fafbfe;
+    padding:12px 14px; font:inherit; font-size:15px; color:var(--ink); resize:vertical;
+    transition:border-color .15s, box-shadow .15s, background .15s;
+  }
+  input[type=text]:focus, textarea:focus, select:focus{
+    outline:none; border-color:var(--brand); background:#fff; box-shadow:0 0 0 4px rgba(52,87,213,.11);
+  }
+  textarea{min-height:88px; line-height:1.65}
+  ::placeholder{color:#a9b1c4}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+  @media(max-width:720px){.grid2,.grid3{grid-template-columns:1fr}}
+
+  /* ── 맥락 불릿 ──────────────────────── */
+  .ctx{background:linear-gradient(180deg,#f7f9fd,#f3f6fc); border:1px solid var(--line);
+       border-left:4px solid var(--brand);
+       border-radius:0 12px 12px 0; padding:13px 17px; margin:0 0 15px}
+  .ctx ul{margin:0; padding-left:18px}
+  .ctx li{font-size:14px; color:#49536b; margin:3.5px 0}
+  .ctx li::marker{color:var(--brand)}
+  .ctx.green{border-left-color:var(--accent)}
+  .ctx.green li::marker{color:var(--accent)}
+
+  /* ── 진단 방법 스텝 ─────────────────── */
+  .steps{display:flex; flex-direction:column; gap:12px; margin:0 0 16px}
+  .stepbox{display:flex; gap:14px; align-items:flex-start;
+    background:#f8fafd; border:1px solid var(--line); border-radius:14px; padding:14px 16px}
+  .stepbox .sn{flex:none; width:30px; height:30px; border-radius:10px; display:grid; place-items:center;
+    background:linear-gradient(135deg,var(--brand),#5b7cf0); color:#fff; font-weight:800; font-size:14px; margin-top:2px}
+  .stepbox .st b{display:block; font-size:15px; margin-bottom:2px}
+  .stepbox .st p{margin:0; font-size:13.5px; color:#49536b}
+
+  /* ── 질문 ───────────────────────────── */
+  .q{font-size:16.5px; font-weight:750; color:var(--brand-deep); margin:0 0 10px;
+     display:flex; gap:9px; align-items:flex-start}
+  .q .mark{
+    flex:none; background:linear-gradient(135deg,var(--brand),#5b7cf0); color:#fff;
+    border-radius:8px; font-size:12.5px; font-weight:800; padding:3px 9px; margin-top:2px;
+    box-shadow:0 3px 8px -3px rgba(52,87,213,.5);
+  }
+
+  /* ── 표 ─────────────────────────────── */
+  table{width:100%; border-collapse:separate; border-spacing:0; margin-top:6px;
+        border:1px solid var(--line); border-radius:12px; overflow:hidden}
+  th,td{border-bottom:1px solid var(--line); border-right:1px solid var(--line);
+        padding:10px 12px; text-align:left; vertical-align:middle; font-size:14px}
+  th:last-child, td:last-child{border-right:none}
+  tr:last-child td{border-bottom:none}
+  th{background:linear-gradient(180deg,#f2f5fb,#ecf0f9); font-weight:750; font-size:13px; color:#3a4560}
+  td.k{background:#f8fafd; font-weight:750; width:130px; white-space:nowrap; color:var(--brand-deep)}
+  td.hint{color:var(--ink-soft); font-size:13px; width:210px; background:#fcfdff}
+  td input[type=text], td textarea{border:none; background:transparent; padding:5px 3px; font-size:14px; border-radius:8px}
+  td textarea{min-height:44px}
+  td input:focus, td textarea:focus{box-shadow:none; background:#f2f6ff}
+  td input.numin{width:64px; text-align:center}
+
+  /* ── 점수 ───────────────────────────── */
+  .score-row{display:flex; gap:7px; flex-wrap:wrap}
+  .score-row input{position:absolute; opacity:0; width:0; height:0}
+  .score-row label{
+    display:grid; place-items:center; width:36px; height:36px; border-radius:11px;
+    border:1.5px solid var(--line); background:#fbfcfe; cursor:pointer; font-size:14px; font-weight:750;
+    color:var(--ink-soft); transition:.13s;
+  }
+  .score-row label:hover{border-color:var(--brand); color:var(--brand); transform:translateY(-1px)}
+  .score-row input:checked + label{
+    background:linear-gradient(135deg,var(--brand),#5b7cf0); border-color:var(--brand); color:#fff;
+    box-shadow:0 4px 10px -3px rgba(52,87,213,.55); transform:translateY(-1px);
+  }
+  .scale-note{font-size:12px; color:#9aa3b8; margin-top:5px}
+
+  /* ── 레이더 ─────────────────────────── */
+  .radar-box{display:grid; grid-template-columns:310px 1fr; gap:24px; align-items:center}
+  @media(max-width:720px){.radar-box{grid-template-columns:1fr; justify-items:center}}
+  .radar-wrap{background:radial-gradient(circle at 50% 45%, #f8faff, #eef2fa); border:1px solid var(--line);
+              border-radius:16px; padding:6px; line-height:0}
+  .radar-note{font-size:14px; color:var(--ink-soft)}
+  .radar-note b{color:var(--ink)}
+  .radar-note li::marker{color:var(--brand)}
+
+  /* ── 체크 ───────────────────────────── */
+  .checks{display:flex; flex-direction:column; gap:9px}
+  .chk{display:flex; gap:10px; align-items:flex-start; font-size:14px; color:#49536b;
+       background:#f8fafd; border:1px solid var(--line); border-radius:10px; padding:9px 13px;
+       cursor:pointer; transition:.13s}
+  .chk:hover{border-color:#c6d2ec}
+  .chk:has(input:checked){background:var(--brand-soft); border-color:#b9cbf7}
+  .chk input{margin-top:4px; accent-color:var(--brand); width:16px; height:16px}
+
+  /* ── 마무리 ─────────────────────────── */
+  .closing{position:relative; overflow:hidden;
+    background:linear-gradient(135deg,#0f9d8b,#0b7a6c 70%); color:#fff; border:none}
+  .closing::before{content:""; position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(circle at 90% 0%, rgba(255,255,255,.18), transparent 45%)}
+  .closing > *{position:relative}
+  .closing .src{background:rgba(255,255,255,.18); color:#fff; border-color:rgba(255,255,255,.3)}
+  .closing h2{color:#fff}
+  .closing p{font-size:15px; margin:0 0 12px; opacity:.97}
+  .closing .flow{
+    background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.28); border-radius:12px;
+    padding:13px 16px; font-weight:750; text-align:center; letter-spacing:.01em; margin:16px 0 20px;
+  }
+  .closing label.fld{color:#fff}
+  .closing textarea, .closing input[type=text]{background:rgba(255,255,255,.96); border:none}
+  .closing .chk{background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.3); color:#fff}
+  .closing .chk:has(input:checked){background:rgba(255,255,255,.28)}
+
+  /* ── 페이지 푸터 ─────────────────────── */
+  .site-foot{text-align:center; color:#9aa3b8; font-size:12.5px; margin:36px 0 0; line-height:1.9}
+  .site-foot b{color:#6b7590}
+
+  /* ── 하단 바 ────────────────────────── */
+  .bar{
+    position:fixed; left:0; right:0; bottom:0; background:rgba(255,255,255,.92);
+    border-top:1px solid var(--line); backdrop-filter:blur(10px);
+    padding:12px 20px; display:flex; align-items:center; gap:12px; justify-content:center;
+    box-shadow:0 -4px 20px rgba(22,48,94,.08); z-index:50;
+  }
+  .bar .status{font-size:13px; color:var(--ink-soft); margin-right:auto; display:flex; align-items:center; gap:7px}
+  .bar .status::before{content:""; width:8px; height:8px; border-radius:50%; background:#22c08e}
+  @media(max-width:720px){.bar .status{display:none}}
+  button{
+    font:inherit; font-weight:750; border-radius:12px; padding:12px 22px; cursor:pointer;
+    border:1.5px solid transparent; transition:.14s; font-size:15px;
+  }
+  .btn-primary{background:linear-gradient(135deg,var(--brand),#2a49bb); color:#fff;
+    box-shadow:0 6px 16px -6px rgba(52,87,213,.6)}
+  .btn-primary:hover{transform:translateY(-1px); box-shadow:0 9px 20px -6px rgba(52,87,213,.7)}
+  .btn-primary:active{transform:translateY(0)}
+  .btn-ghost{background:#fff; border-color:var(--line); color:var(--ink-soft)}
+  .btn-ghost:hover{border-color:#c3cbdc; color:var(--ink)}
+
+  .toast{
+    position:fixed; bottom:82px; left:50%; transform:translateX(-50%) translateY(10px);
+    background:#1a2138; color:#fff; padding:11px 20px; border-radius:999px; font-size:14px;
+    box-shadow:0 10px 30px -8px rgba(0,0,0,.4);
+    opacity:0; pointer-events:none; transition:.25s; z-index:60;
+  }
+  .toast.on{opacity:1; transform:translateX(-50%) translateY(0)}
+
+  /* ── 인쇄(PDF) ──────────────────────── */
+  #print-root{display:none}
+  @media print{
+    @page{size:A4; margin:14mm 13mm}
+    body{background:#fff; -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .wrap, header.hero, .tabs, .bar, .toast{display:none !important}
+    #print-root{display:block !important}
+    .p-head{border-bottom:3px solid #3457d5; padding-bottom:12px; margin-bottom:18px}
+    .p-head .p-brand{font-size:9.5pt; color:#3457d5; font-weight:800; letter-spacing:.06em; margin:0 0 4px}
+    .p-head h1{margin:0 0 8px; font-size:18pt; color:#16305e; letter-spacing:-.01em}
+    .p-meta{font-size:10.5pt; color:#444; display:flex; flex-wrap:wrap; gap:6px 20px}
+    .p-meta b{color:#16305e}
+    .p-sec{margin:17px 0 10px; font-size:13pt; font-weight:800; color:#16305e;
+           border-left:5px solid #3457d5; padding:2px 0 2px 10px; background:#f3f6fd;
+           border-radius:0 6px 6px 0; page-break-after:avoid}
+    .p-item{margin:0 0 11px; page-break-inside:avoid}
+    .p-q{font-size:10.5pt; font-weight:750; color:#3457d5; margin:0 0 3px}
+    .p-a{font-size:11pt; white-space:pre-wrap; margin:0; padding:8px 11px;
+         background:#f7f9fd; border:1px solid #dde3ee; border-radius:6px; line-height:1.65}
+    .p-item table{width:100%; border-collapse:collapse; border-radius:0; overflow:visible; border:none}
+    .p-item th, .p-item td{border:1px solid #ccd3e0; padding:6px 9px; font-size:10pt; vertical-align:top}
+    .p-item th{background:#e9eefb; color:#16305e}
+    .p-item tr:nth-child(even) td{background:#fafbfe}
+    .p-radar{text-align:center; margin:8px 0; page-break-inside:avoid}
+    .p-close{margin-top:20px; padding:15px 17px; border:2px solid #0f9d8b; border-radius:10px;
+             background:#f0fbf9; page-break-inside:avoid}
+    .p-close h3{margin:0 0 8px; font-size:12pt; color:#0b7a6c}
+    .p-close p{margin:0 0 6px; font-size:10.5pt; line-height:1.65}
+    .p-close .flow{margin-top:10px; text-align:center; font-weight:800; color:#0b7a6c; font-size:11pt;
+                   background:#e2f5f1; border-radius:6px; padding:7px}
+    .p-foot{margin-top:18px; padding-top:9px; border-top:1px solid #ddd;
+            font-size:9pt; color:#888; text-align:center; line-height:1.7}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-in">
+    <span class="badge">2026년 인공지능 활용 선도교사 연수 · 집합⑬ (25~27차시)</span>
+    <h1>AI·디지털 역량 진단 및 전문성 개발 경로 설계 <span class="hl">· 활동</span></h1>
+    <p class="sub">활동을 기록하면 차시별 PDF 활동지로 정리해 드립니다.</p>
+    <div class="flowchips">
+      <span class="fc">돌아봄 · 활동1</span><span class="arw">→</span>
+      <span class="fc">진단 · 활동2</span><span class="arw">→</span>
+      <span class="fc">설계 · 활동3</span><span class="arw">→</span>
+      <span class="fc">실천·연대 · 활동4</span>
+    </div>
+    <div class="credit">제작자 : 아주중 송세호(송쌤과학)</div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <div class="tabs-in">
+    <button class="tab on" data-t="25">25차시<small>활동1 · 연수 돌아보기</small></button>
+    <button class="tab" data-t="26">26차시<small>활동2 · 역량 심층 진단</small></button>
+    <button class="tab" data-t="27">27차시<small>활동3·4 · 경로 설계와 마무리</small></button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- 기본 정보 (공통) -->
+  <div class="card">
+    <h2>기본 정보</h2>
+    <p class="lead">작성자 정보를 입력해 주세요. 모든 차시 PDF 표지에 함께 기록됩니다.</p>
+    <div class="grid2">
+      <div>
+        <label class="fld" for="school">학교명</label>
+        <input type="text" id="school" data-k="school" placeholder="예) 아주중학교">
+      </div>
+      <div>
+        <label class="fld" for="name">이름</label>
+        <input type="text" id="name" data-k="name" placeholder="예) 홍길동">
+      </div>
+    </div>
+  </div>
+
+<!-- ════════════════════════════ 25차시 ════════════════════════════ -->
+<section class="lesson on" data-lesson="25">
+
+  <div class="section-head">
+    <div class="num">1</div>
+    <div class="tx">
+      <div class="step">25차시 · 활동 1 · 왜 돌아보는가?</div>
+      <h2>12개의 과정, 잠시 멈추어 돌아봅니다</h2>
+      <p>돌아보기는 '회상'이 아니라 진단·로드맵의 <b>재료</b>를 모으는 일입니다. 떠오르는 대로 편안하게 적어 보세요.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">p.6 · 23차시 돌아보기</span>
+    <h3>27차시 여정의 마지막 공통과정</h3>
+    <div class="ctx"><ul>
+      <li>본격 진단에 앞서 1~12번 과정을 함께 회고합니다.</li>
+      <li>무엇을 배웠고(이해), 어떻게 써 보았으며(활용), 무엇이 달라졌는지(성찰)를 떠올려 보세요.</li>
+      <li>진단은 평가가 아닌 <b>성장의 출발점</b>입니다. 솔직하고 편안하게 함께해요.</li>
+    </ul></div>
+    <p class="q"><span class="mark">Q1</span> 12개 과정을 지나온 나, 1차시의 나와 무엇이 달라졌을까?</p>
+    <textarea data-k="q1" data-q="Q1. 12개 과정을 지나온 나, 1차시의 나와 무엇이 달라졌을까?" placeholder="1차시 첫날의 나를 떠올리며, 지금의 나와 비교해 적어 보세요."></textarea>
+  </div>
+
+  <div class="card">
+    <span class="src">p.7 · 9 · 12개 과정에서 키워온 7개의 역량(A~G)</span>
+    <h3>교과목은 달라도 같은 흐름을 걸어왔습니다</h3>
+    <div class="ctx"><ul>
+      <li>[공통과정] ①②③ AI·디지털 교육 본질·가치관·윤리 (초·중등 모두 함께)</li>
+      <li>[집중과정·분반] ④~⑫ 학교급·교과별 연수과정에서 설계 → 실행 → 분석 → 환류</li>
+      <li>[공통과정] ⑬ 오늘, 성장을 이어가다 (사후 진단·전문성 경로 설계)</li>
+      <li>같은 역량체계(A~G)와 같은 흐름(이해→설계→실행→평가→성장)을 걸어왔습니다.</li>
+    </ul></div>
+    <p class="q"><span class="mark">Q2</span> 나의 학교급·교과목 연수과정에서 가장 크게 배운 것은 무엇인가?</p>
+    <textarea data-k="q2" data-q="Q2. 나의 학교급·교과목 연수과정에서 가장 크게 배운 것은 무엇인가?" placeholder="내 교과·학교급 맥락에서 가장 크게 남은 배움을 적어 보세요."></textarea>
+  </div>
+
+  <div class="card">
+    <span class="src">p.8 · 7개의 역량(A~G)</span>
+    <h3>역량체계 A~G, 오늘의 진단도 이 체계로 측정합니다</h3>
+    <div class="ctx"><ul>
+      <li><b>[기본]</b> A. 교육 이해 · B. 윤리적 실천</li>
+      <li><b>[교육 실천]</b> C. 수업·학습자 분석 · D. 교수·학습 및 평가 설계 · E. 실행 · F. 평가 실행</li>
+      <li><b>[발전]</b> G. AI·디지털 기반 교사 전문성 개발 (오늘 ⑬의 핵심, 메타역량)</li>
+    </ul></div>
+    <p class="q"><span class="mark">Q3</span> 가장 성장했다고 느끼는 역량 한 가지(A~G)를 미리 떠올려 표시해 두세요.</p>
+    <div class="grid2">
+      <div>
+        <label class="fld" for="q3sel">가장 성장한 역량</label>
+        <select id="q3sel" data-k="q3sel" data-q="Q3. 가장 성장했다고 느끼는 역량(A~G)">
+          <option value="">— 선택 —</option>
+          <option>A. 교육 이해</option>
+          <option>B. 윤리적 실천</option>
+          <option>C. 수업·학습자 분석</option>
+          <option>D. 교수·학습 및 평가 설계</option>
+          <option>E. 실행</option>
+          <option>F. 평가 실행</option>
+          <option>G. AI·디지털 기반 교사 전문성 개발</option>
+        </select>
+      </div>
+      <div>
+        <label class="fld" for="q3why">그렇게 느낀 이유</label>
+        <textarea id="q3why" data-k="q3why" data-q="Q3-1. 그 역량이 가장 성장했다고 느낀 이유" style="min-height:48px" placeholder="구체적인 장면이나 경험과 연결해 적어 보세요."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">p.10 · 원격 1일차 : ①②③ (공통)</span>
+    <h3>본질·가치관·윤리 — 초·중등 모두가 함께 다진 '뿌리'</h3>
+    <div class="ctx"><ul>
+      <li>① 교육 본질 이해 — AI 시대 교육의 방향, 교사·학습자·AI 역할 매트릭스</li>
+      <li>② 교육 가치관 정립 — 학생·교사 주도성, 사회정서학습, 나의 교육 가치관 선언문</li>
+      <li>③ 교육 윤리 이해 — 데이터 보안·개인정보, 윤리 딜레마 분석, 실천 체크리스트</li>
+      <li>키운 역량 — A(이해) · B(윤리) · C3</li>
+    </ul></div>
+    <p class="q"><span class="mark">Q4</span> 나의 'AI·디지털 교육 가치관'은 그때보다 얼마나 또렷해졌나?</p>
+    <textarea data-k="q4" data-q="Q4. 나의 'AI·디지털 교육 가치관'은 그때보다 얼마나 또렷해졌나?" placeholder="가치관 선언문을 쓰던 그때와 지금을 비교해 보세요."></textarea>
+  </div>
+
+  <div class="card">
+    <span class="src">p.11 · 원격 2일차 : ④⑤</span>
+    <h3>교수학습 설계 이해(1) — 역량 C1·C2·D1·D2</h3>
+    <div class="ctx"><ul>
+      <li>④ 사례 분석과 학습 데이터 해석 — 데이터로 학생 읽기(양적·질적), 데이터 해석 기술서 작성</li>
+      <li>⑤ 목표-활동-평가를 잇는 설계 — 백워드 설계, 성취기준 정합성, 도구-목적 매핑</li>
+      <li>교과별 분반에서 각자의 성취기준·교과 맥락으로 실습 — 포트폴리오: 수업설계안 시작</li>
+    </ul></div>
+    <p class="q"><span class="mark">Q5</span> 데이터로 학생을 '읽는' 눈은 얼마나 자랐을까?</p>
+    <textarea data-k="q5" data-q="Q5. 데이터로 학생을 '읽는' 눈은 얼마나 자랐을까?" placeholder="데이터 해석 기술서를 쓰기 전과 후를 떠올려 보세요."></textarea>
+  </div>
+
+  <div class="card">
+    <span class="src">p.12 · 원격 3일차 : ⑥⑦</span>
+    <h3>교수학습 설계 이해(2) — 역량 D1·D2·E1·F1</h3>
+    <div class="ctx"><ul>
+      <li>⑥ 맥락에 맞는 도구 활용 — 도입-전개-정리별 도구 매핑, 교사 역할 변화(설명자→촉진자)</li>
+      <li>⑦ 데이터 기반 과정중심평가 설계 — 루브릭·체크리스트·피드백, 백워드 설계로 통합</li>
+      <li>수준별 지원(기초~심화), 교과 성취기준 기반 — 수업설계안 초안 완성</li>
+    </ul></div>
+    <p class="q"><span class="mark">Q6</span> 도구는 '목적'을 위한 수단이라는 원칙, 잘 지키고 있는가?</p>
+    <textarea data-k="q6" data-q="Q6. 도구는 '목적'을 위한 수단이라는 원칙, 잘 지키고 있는가?" placeholder="도구가 목적이 되어버린 순간은 없었는지 돌아보세요."></textarea>
+  </div>
+
+  <div class="card">
+    <span class="src">p.13 · 집합 1일차 : ⑧⑨</span>
+    <h3>실천 이해·설계 워크숍 — 혼자 만든 설계를 '함께' 다듬기</h3>
+    <div class="ctx"><ul>
+      <li>⑧ 실천의 시작(공통) — 집합 워밍업, 원격 학습 점검, 분임·팀 편성</li>
+      <li>⑨ 교수학습 설계 워크숍 — 역량 C2·D2·E2·F2, 교과별 분반에서 설계안 구체화·동료 검토</li>
+      <li>도구 활용 점검표·인지부하 점검, 발문·학생 동선 정교화 → 수업설계안 1차 보완본</li>
+    </ul></div>
+    <p class="q"><span class="mark">Q7</span> 동료의 눈으로 본 내 수업, 어떤 점이 새로웠나?</p>
+    <textarea data-k="q7" data-q="Q7. 동료의 눈으로 본 내 수업, 어떤 점이 새로웠나?" placeholder="동료 검토에서 들었던 말 중 기억에 남는 것을 적어 보세요."></textarea>
+  </div>
+
+  <div class="card">
+    <span class="src">p.14 · 집합 2일차 : ⑪⑫</span>
+    <h3>데이터 분석·환류</h3>
+    <div class="ctx"><ul>
+      <li>⑪ 교수학습 데이터 분석 — 역량 C2, 양적·질적 학습데이터 정제·시각화·해석, 편향 재검토</li>
+      <li>⑫ 평가 결과 기반 환류 — 역량 C3·D3·E3·F3, 설계 타당성 성찰, 환류 전략, 동료 코칭</li>
+      <li>교과별 분반에서 ⑩ 실행 데이터를 분석 → 환류로 연결, 우수 설계안 발표·시연</li>
+    </ul></div>
+    <p class="q"><span class="mark">Q8</span> 데이터가 알려 준 '다음 수업'의 방향은 무엇이었나?</p>
+    <textarea data-k="q8" data-q="Q8. 데이터가 알려 준 '다음 수업'의 방향은 무엇이었나?" placeholder="데이터 분석 결과가 바꾼 나의 다음 수업 계획을 적어 보세요."></textarea>
+  </div>
+
+  <div class="section-head">
+    <div class="num">2</div>
+    <div class="tx">
+      <div class="step">25차시 · 활동지</div>
+      <h2>나의 변화를 '눈에 보이게' 정리하기</h2>
+      <p>여기서 모은 강점·보완점·변화가 곧 사후 진단 해석과 성장 로드맵의 재료가 됩니다.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">p.17 · 활동지 ① 12개 과정 한 줄 회고</span>
+    <h3>각 과정에서 '내가 얻은 것'을 한 줄로 적어 봅니다</h3>
+    <table>
+      <thead><tr><th style="width:130px">과정</th><th style="width:210px">핵심 배움 (요약)</th><th>나의 한 줄 회고</th></tr></thead>
+      <tbody>
+        <tr><td class="k">① 본질 이해</td><td class="hint">AI 시대 교육 방향·역할 매트릭스</td><td><input type="text" data-k="o1" placeholder="한 줄로 적어 보세요"></td></tr>
+        <tr><td class="k">②③ 가치관·윤리</td><td class="hint">가치관 선언문·윤리 체크리스트</td><td><input type="text" data-k="o2" placeholder="한 줄로 적어 보세요"></td></tr>
+        <tr><td class="k">④⑤ 데이터·설계</td><td class="hint">데이터 해석·수업설계 뼈대</td><td><input type="text" data-k="o3" placeholder="한 줄로 적어 보세요"></td></tr>
+        <tr><td class="k">⑥⑦ 도구·평가</td><td class="hint">도구 맥락 활용·과정중심평가 설계</td><td><input type="text" data-k="o4" placeholder="한 줄로 적어 보세요"></td></tr>
+        <tr><td class="k">⑧⑨⑩ 집합 실행</td><td class="hint">팀 설계·마이크로티칭 실행</td><td><input type="text" data-k="o5" placeholder="한 줄로 적어 보세요"></td></tr>
+        <tr><td class="k">⑪⑫ 분석·환류</td><td class="hint">학습데이터 분석·환류 설계</td><td><input type="text" data-k="o6" placeholder="한 줄로 적어 보세요"></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <span class="src">p.18 · 활동지 ② 역량별 자가점수</span>
+    <h3>A~F 역량 키워드를 보고 현재 나의 자신감을 표시</h3>
+    <p class="lead">1점 = 낯설다 &nbsp;~&nbsp; 5점 = 능숙하다</p>
+    <table>
+      <thead><tr><th style="width:52px">코드</th><th>역량명 (키워드)</th><th style="width:240px">나의 점수</th></tr></thead>
+      <tbody id="tb-s25"></tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <span class="src">p.19 · 활동지 ② 나의 별자리</span>
+    <h3>점수를 잇고, 메타 역량(G)으로 성찰하기</h3>
+    <div class="radar-box">
+      <div class="radar-wrap" id="radar25"></div>
+      <div class="radar-note">
+        <p style="margin:0 0 10px">A~F 점수를 점으로 찍고 선으로 이으면 <b>'나의 별자리'</b>가 나타납니다.</p>
+        <ul style="margin:0 0 12px; padding-left:18px">
+          <li>가장 크게 부푼 영역 = <b>강점</b></li>
+          <li>움푹 들어간 영역 = <b>보완점</b></li>
+          <li>G역량이 이 전체를 감싸는 <b>메타 역량</b>입니다.</li>
+        </ul>
+        <p class="q" style="font-size:15px; margin:0"><span class="mark">?</span> 나의 별자리에서 가장 연결이 끊어진 곳은 어디인가?</p>
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:18px">
+      <div>
+        <label class="fld" for="strength">강점 역량 → 동료를 도울 나의 무기</label>
+        <input type="text" id="strength" data-k="strength" data-q="강점 역량 (동료를 도울 나의 무기)" placeholder="예) E. 실행">
+      </div>
+      <div>
+        <label class="fld" for="weak">보완 역량 → 다음 성장의 기회</label>
+        <input type="text" id="weak" data-k="weak" data-q="보완 역량 (다음 성장의 기회)" placeholder="예) F. 평가 실행">
+      </div>
+    </div>
+    <div style="margin-top:16px">
+      <label class="fld" for="reflect">한 문장 성찰</label>
+      <p class="lead" style="margin:0 0 6px">“나는 (&nbsp;&nbsp;&nbsp;&nbsp;) 역량을 보완하여, A~F가 조화로운 수업을 설계하고 싶다.”</p>
+      <textarea id="reflect" data-k="reflect" data-q="한 문장 성찰" style="min-height:56px" placeholder="위 문장을 나의 말로 완성해 보세요."></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">p.20 · 활동지 ③ 수업 혁신의 이면 읽기</span>
+    <h3>우수 사례 속 '보이지 않는 교사의 역량'을 역추적해 봅니다</h3>
+    <table>
+      <thead><tr><th style="width:120px">역량 요소</th><th>이 수업에서 교사는 어떻게 발휘했나요? (구체적 행동)</th></tr></thead>
+      <tbody>
+        <tr><td class="k">[C] 분석</td><td><textarea data-k="b1" placeholder="예) AI 진단 결과로 학생 수준을 3그룹으로 나눔 …"></textarea></td></tr>
+        <tr><td class="k">[D] 설계</td><td><textarea data-k="b2" placeholder="구체적인 교사 행동으로 적어 보세요"></textarea></td></tr>
+        <tr><td class="k">[E] 실행</td><td><textarea data-k="b3" placeholder="구체적인 교사 행동으로 적어 보세요"></textarea></td></tr>
+        <tr><td class="k">[F] 평가</td><td><textarea data-k="b4" placeholder="구체적인 교사 행동으로 적어 보세요"></textarea></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <span class="src">p.21 · 회고 활동 ① 기억에 남는 순간</span>
+    <h3>23차시 중 가장 기억에 남는 한 장면 (5분)</h3>
+    <div class="ctx"><ul>
+      <li>가장 기억에 남는 '한 장면'을 떠올려 적기 (배움·도전·실패·뿌듯함 무엇이든).</li>
+      <li>왜 그 순간이 기억에 남았는지 한 문장으로 나의 변화와 연결해 보기.</li>
+      <li>패들렛(또는 포스트잇)에 한 줄로 공유하고, 동료들의 순간도 함께 살펴보기.</li>
+    </ul></div>
+    <div style="margin-bottom:14px">
+      <label class="fld" for="m1">가장 기억에 남는 한 장면</label>
+      <textarea id="m1" data-k="m1" data-q="가장 기억에 남는 한 장면" placeholder="그때의 장면을 떠오르는 대로 적어 보세요."></textarea>
+    </div>
+    <div>
+      <label class="fld" for="m2">왜 그 순간이 기억에 남았나 — 나의 변화와 연결해 한 문장으로</label>
+      <textarea id="m2" data-k="m2" data-q="그 순간이 기억에 남은 이유 (나의 변화와 연결)" style="min-height:56px" placeholder="한 문장으로 적어 보세요."></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">p.22 · 회고 활동 ② KPT 회고</span>
+    <h3>12개 과정을 Keep · Problem · Try 로 정리해보기</h3>
+    <div class="grid3">
+      <div>
+        <label class="fld" style="color:var(--accent)">Keep — 잘된 것·이어갈 것</label>
+        <textarea data-k="kpt_k" data-q="[KPT] Keep — 잘된 것·이어갈 것" style="min-height:120px" placeholder="이어가고 싶은 것"></textarea>
+      </div>
+      <div>
+        <label class="fld" style="color:var(--warn)">Problem — 아쉬운 것·문제</label>
+        <textarea data-k="kpt_p" data-q="[KPT] Problem — 아쉬운 것·문제" style="min-height:120px" placeholder="아쉬웠던 것"></textarea>
+      </div>
+      <div>
+        <label class="fld" style="color:var(--brand)">Try — 새로 시도할 것</label>
+        <textarea data-k="kpt_t" data-q="[KPT] Try — 새로 시도할 것" style="min-height:120px" placeholder="새로 시도할 것"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">p.23 · 활동지 ④ 1차시의 나 vs 지금의 나</span>
+    <h3>연수 전과 후, 나의 변화를 적어 봅니다</h3>
+    <table>
+      <thead><tr><th style="width:110px"></th><th>Before (이전)</th><th>After (이후)</th></tr></thead>
+      <tbody>
+        <tr><td class="k">마음가짐</td>
+            <td><textarea data-k="ba1b" placeholder="예) AI가 두렵고 귀찮았다"></textarea></td>
+            <td><textarea data-k="ba1a" placeholder="예) AI가 수업의 파트너로 느껴진다"></textarea></td></tr>
+        <tr><td class="k">수업 설계</td>
+            <td><textarea data-k="ba2b" placeholder="예) 교과서 진도 나가기 급급"></textarea></td>
+            <td><textarea data-k="ba2a" placeholder="지금은 어떻게 달라졌나요?"></textarea></td></tr>
+        <tr><td class="k">동료 관계</td>
+            <td><textarea data-k="ba3b" placeholder="이전에는 어땠나요?"></textarea></td>
+            <td><textarea data-k="ba3a" placeholder="지금은 어떻게 달라졌나요?"></textarea></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <span class="src">p.24 · 동료와 함께 나누기</span>
+    <h3>서로의 여정 나누기 (짝/모둠, 10분)</h3>
+    <div class="ctx"><ul>
+      <li>① 나의 '별자리'와 가장 기억에 남는 순간, 변화 한 문장을 소개하기 (각 2분).</li>
+      <li>② 동료의 이야기에서 공감되는 점·배울 점을 한 가지씩 말해 주기.</li>
+      <li>③ 서로의 'Try(시도할 것)'에 응원 한마디.</li>
+    </ul></div>
+    <div style="margin-bottom:14px">
+      <label class="fld" for="peer1">동료의 이야기에서 공감된 점 · 배울 점</label>
+      <textarea id="peer1" data-k="peer1" data-q="동료의 이야기에서 공감된 점·배울 점" placeholder="동료에게서 얻은 것을 적어 보세요."></textarea>
+    </div>
+    <div>
+      <label class="fld" for="peer2">동료의 여정에서 찾은 '내 다음 걸음의 힌트'</label>
+      <textarea id="peer2" data-k="peer2" data-q="동료의 여정에서 찾은 내 다음 걸음의 힌트" style="min-height:56px" placeholder="내 다음 걸음에 반영할 힌트를 적어 보세요."></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">p.25 · 돌아봄을 '심층 진단'으로 이어 갑니다</span>
+    <h3>다음 활동(활동 2) — AI·디지털 역량 심층 진단</h3>
+    <div class="ctx"><ul>
+      <li>방금 떠올린 변화·강점·아쉬움은 사후 진단 결과를 해석하는 <b>'나만의 렌즈'</b>가 됩니다.</li>
+      <li>사후 검사 → 사전·사후 비교 → 해석의 순서로 진행합니다.</li>
+    </ul></div>
+    <label class="fld" style="margin-bottom:8px">준비물 확인</label>
+    <div class="checks" style="margin-bottom:16px">
+      <label class="chk"><input type="checkbox" data-k="p1"><span>노트북·태블릿</span></label>
+      <label class="chk"><input type="checkbox" data-k="p2"><span>진단 플랫폼 접속 환경</span></label>
+      <label class="chk"><input type="checkbox" data-k="p3"><span>나의 포트폴리오 파일 (사전 역량 대시보드 캡쳐·역량 개발 계획서 초안)</span></label>
+    </div>
+    <label class="fld" for="next">이번 진단에서 꼭 확인하고 싶은 나의 성장은 무엇인가?</label>
+    <textarea id="next" data-k="next" data-q="이번 진단에서 꼭 확인하고 싶은 나의 성장" placeholder="돌아보기에서 모은 단서를 손에 들고, '지금의 나'를 진단해 봅시다."></textarea>
+  </div>
+
+  <div class="card closing">
+    <span class="src">p.26 · 활동 1 마무리</span>
+    <h2>1번~12번 과정 되돌아보기 — 정리하며</h2>
+    <p>지나온 <b>12개 과정은 흩어진 연수가 아니라, A~G 역량을 키워 온 하나의 여정</b>이었습니다. 오늘 우리는 자가진단으로 나의 현재를 재고, 우수 사례 속 교사의 역량을 역추적하고, KPT와 Before &amp; After로 나의 변화를 <b>'눈에 보이게'</b> 정리했습니다.</p>
+    <p>여기서 모은 <b>강점·보완점·변화</b>는 그대로 사후 진단 결과를 해석하는 렌즈가 되고, 성장 로드맵을 세우는 재료가 됩니다. 그러니 오늘의 연수는 끝이 아니라 <b>'현장 실천의 출발점'</b>입니다. 다음 활동에서 바로 그 출발선을 함께 그려 보겠습니다.</p>
+    <div class="flow">돌아봄(활동1) → 진단(활동2) → 설계(활동3) → 실천·연대(활동4)</div>
+    <label class="fld" for="vow">오늘의 돌아보기를 한 문장으로 — 나의 성장 다짐</label>
+    <textarea id="vow" data-k="vow" data-q="오늘의 돌아보기를 한 문장으로 — 나의 성장 다짐" style="min-height:56px" placeholder="예) 나는 데이터로 학생을 읽는 눈을 길러, 한 명도 놓치지 않는 수업을 설계하겠다."></textarea>
+  </div>
+
+</section>
+
+<!-- ════════════════════════════ 26차시 ════════════════════════════ -->
+<section class="lesson" data-lesson="26">
+
+  <div class="section-head">
+    <div class="num">1</div>
+    <div class="tx">
+      <div class="step">26차시 · 활동 2 (p.27)</div>
+      <h2>AI·디지털 역량 심층 진단</h2>
+      <p>사후 검사 → 사전·사후 비교 → 해석으로, 나의 성장을 데이터로 확인합니다.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">p.28 · 왜 사후 진단인가</span>
+    <h3>성장은 '눈에 보일' 때 이어집니다</h3>
+    <div class="ctx"><ul>
+      <li>1차시 사전 진단의 짝 — 연수 시작에 실시한 자가진단과 비교해 나의 성장을 확인합니다.</li>
+      <li>막연한 '잘 배웠다'를 넘어, 어느 역량이 얼마나 자랐는지 <b>데이터</b>로 봅니다.</li>
+      <li>진단은 평가·서열이 아니라 <b>성장을 위한 나침반</b> — 솔직하게 응답할수록 정확합니다.</li>
+      <li>결과는 곧 작성할 '성장 로드맵'(활동3)의 출발점이 됩니다.</li>
+      <li>준비 : 1차시에 캡쳐한 사전 역량 대시보드(포트폴리오 저장본)를 꺼내 두세요.</li>
+    </ul></div>
+    <p class="q"><span class="mark">Q1</span> 나는 이번 진단에서 무엇을 확인하고 싶은가?</p>
+    <textarea data-k="t2_q1" data-q="Q1. 나는 이번 진단에서 무엇을 확인하고 싶은가?" placeholder="계획서에 적어둔 '사후 역량 측정 목표'와 연결해 적어 보세요."></textarea>
+  </div>
+
+  <div class="card">
+    <span class="src">p.29 · 진단의 기준 — 역량체계 A~G</span>
+    <h3>무엇을 측정하나 — 7개 역량 × 3단계</h3>
+    <div class="ctx"><ul>
+      <li><b>[기본]</b> A. 교육 이해 · B. 윤리적 실천</li>
+      <li><b>[교육 실천]</b> C. 분석 · D. 설계 · E. 실행 · F. 평가</li>
+      <li><b>[발전]</b> G. 교사 전문성 개발</li>
+      <li>3단계로 측정 — <b>이해 → 활용 → 성찰(개선)</b>, 각 역량을 단계별로 진단합니다.</li>
+      <li>진단 결과도 이 체계로 제공되므로, 먼저 A~G를 떠올려 두면 해석이 쉽습니다.</li>
+    </ul></div>
+    <p class="q"><span class="mark">Q2</span> 나는 어느 역량에서 성장했고, 어디가 더 필요할까?</p>
+    <textarea data-k="t2_q2" data-q="Q2. 나는 어느 역량에서 성장했고, 어디가 더 필요할까?" placeholder="진단 전, 나의 예상을 먼저 적어 두면 결과 해석이 더 재미있습니다."></textarea>
+  </div>
+
+  <div class="card">
+    <span class="src">p.30~39 · 사후 진단 방법 요약</span>
+    <h3>사후 진단, 이렇게 진행합니다 (약 15분)</h3>
+    <div class="steps">
+      <div class="stepbox"><div class="sn">1</div><div class="st">
+        <b>진단 도구 확인</b>
+        <p>본 연수는 <b>종합 진단(21문항)</b> 또는 <b>상세 진단(63문항)</b>으로 실시합니다. 종합은 7개 역량의 이해-활용-성찰 단계 수준을, 상세는 행동지표 하위 세부내용 수준까지 정밀하게 측정합니다.</p>
+      </div></div>
+      <div class="stepbox"><div class="sn">2</div><div class="st">
+        <b>사후 역량 진단 실시</b>
+        <p>문항을 깊이 고민하기보다, <b>지금의 나를 있는 그대로</b> 표시하세요. 솔직할수록 정확한 나침반이 됩니다.</p>
+      </div></div>
+      <div class="stepbox"><div class="sn">3</div><div class="st">
+        <b>개인 결과 분석 페이지 접속</b>
+        <p>설문 완료 후 '개인결과 확인 페이지로 이동' 버튼을 누르거나, QR·링크(www.survey.co.kr/Custom/354/result/)로 직접 접속합니다. <b>설문에 응답한 휴대전화 번호</b>를 입력하고 문자로 받은 인증번호 6자리로 본인 인증하면 로그인됩니다.</p>
+      </div></div>
+      <div class="stepbox"><div class="sn">4</div><div class="st">
+        <b>결과 화면 읽기</b>
+        <p>메인 화면에서 ① 사전-사후 역량향상도 ② 연수만족도 ③ 현업적용도(사후 약 3개월 뒤 조사)를 확인합니다. 종합 진단 결과에서는 <b>강점 영역(최대 2개)·보완 필요 영역(최대 2개)</b>, 7개 역량×이해-활용-성찰 단계별 사전·사후 점수와 향상도, 연수 평균과 비교되는 <b>역량별 레이더 차트</b>를 볼 수 있습니다.</p>
+      </div></div>
+      <div class="stepbox"><div class="sn">5</div><div class="st">
+        <b>대시보드 캡쳐 → 포트폴리오 제출</b>
+        <p>결과 대시보드 화면을 캡쳐해 포트폴리오 '사후 역량 대시보드' 칸에 붙여 넣고, 제출 링크로 제출합니다(사전 측정 때와 같은 방식). 메인 화면·레이더 차트 캡쳐는 계획서 평균 비교 칸과 성장 프로파일 근거 자료로 활용됩니다.</p>
+      </div></div>
+    </div>
+    <label class="fld" style="margin-bottom:8px">진행 체크</label>
+    <div class="checks">
+      <label class="chk"><input type="checkbox" data-k="t2_c1"><span>사후 역량 진단(21문항 또는 63문항)을 완료했다</span></label>
+      <label class="chk"><input type="checkbox" data-k="t2_c2"><span>결과 대시보드·레이더 차트 화면을 캡쳐했다</span></label>
+      <label class="chk"><input type="checkbox" data-k="t2_c3"><span>포트폴리오 '사후 역량 대시보드' 제출 링크로 제출했다</span></label>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">p.40~44 · 결과 해석</span>
+    <h3>점수 너머의 의미 읽기</h3>
+    <div class="ctx"><ul>
+      <li>같은 역량도 단계별로 다릅니다 — <b>이해</b>(아는 단계) · <b>활용</b>(수업에 적용하는 단계) · <b>성찰</b>(돌아보고 개선하는 단계).</li>
+      <li>'이해'는 높은데 '활용'이 낮다면, 적용 경험을 늘리는 것이 성장 포인트입니다.</li>
+      <li>레이더 차트에서 크게 부푼 축 = 상대적 강점, 움푹 들어간 곳 = 보완 영역.</li>
+      <li>점수 차이보다 <b>'왜 그럴까'</b>를 나의 수업 경험과 연결해 해석하고, 한두 영역에 집중합니다(선택과 집중).</li>
+    </ul></div>
+    <div style="margin-bottom:14px">
+      <label class="fld">전체적으로 나의 향상도는 어떤 모습인가?</label>
+      <textarea data-k="t2_view" data-q="전체적으로 나의 향상도는 어떤 모습인가?" style="min-height:56px" placeholder="메인 화면(사전-사후 향상도)을 보고 첫인상을 적어 보세요."></textarea>
+    </div>
+    <div style="margin-bottom:14px">
+      <label class="fld">나는 '아는 것'과 '하는 것' 중 어디에서 더 성장했나?</label>
+      <textarea data-k="t2_stage" data-q="나는 '아는 것'과 '하는 것' 중 어디에서 더 성장했나? (이해-활용-성찰)" style="min-height:56px" placeholder="이해·활용·성찰 단계별 점수를 비교해 보세요."></textarea>
+    </div>
+    <div>
+      <label class="fld">나의 프로파일은 어떤 모양인가? 가장 크게 변한 축은?</label>
+      <textarea data-k="t2_axis" data-q="나의 프로파일은 어떤 모양인가? 가장 크게 변한 축은?" style="min-height:56px" placeholder="레이더 차트에서 가장 크게 변한 축과 그 이유를 적어 보세요."></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">p.45 · [활동지] 역량 자가 프로파일링</span>
+    <h3>A~F 역량별 현재 수준을 1~5점으로 표시</h3>
+    <p class="lead">1점 = 부족 &nbsp;~&nbsp; 5점 = 탁월</p>
+    <table>
+      <thead><tr><th style="width:52px">코드</th><th>핵심 질문 (Self-Check)</th><th style="width:240px">나의 점수</th></tr></thead>
+      <tbody id="tb-s26"></tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <span class="src">p.46 · [활동지] 육각형 레이더 차트</span>
+    <h3>점수를 잇고, 나의 모양을 보기</h3>
+    <div class="radar-box">
+      <div class="radar-wrap" id="radar26"></div>
+      <div class="radar-note">
+        <p style="margin:0 0 10px">A~F 6개 축에 점수를 찍고 이으면 나의 <b>육각형</b>이 나타납니다.</p>
+        <ul style="margin:0 0 12px; padding-left:18px">
+          <li>가능하면 플랫폼의 <b>사후 레이더 차트</b>와 겹쳐 비교해 보세요 (자가 인식 vs 데이터).</li>
+          <li>자가진단과 데이터 결과가 다르다면, 그 차이 자체가 좋은 성찰 거리입니다.</li>
+        </ul>
+        <p class="q" style="font-size:15px; margin:0"><span class="mark">?</span> 내 육각형에서 가장 움푹 들어간 축은 어디인가?</p>
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:18px">
+      <div>
+        <label class="fld" for="t2_strong">나의 강점(Strong Point) → 동료를 도울 무기</label>
+        <input type="text" id="t2_strong" data-k="t2_strong" data-q="나의 강점(Strong Point) — 동료를 도울 무기" placeholder="예) D. 설계">
+      </div>
+      <div>
+        <label class="fld" for="t2_weakpt">나의 보완점(Weak Point) → 성장의 기회</label>
+        <input type="text" id="t2_weakpt" data-k="t2_weakpt" data-q="나의 보완점(Weak Point) — 성장의 기회" placeholder="예) C. 분석">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">p.47 · [활동지] 사전 vs 사후 비교</span>
+    <h3>역량별 사전·사후 점수와 변화를 적어 봅니다</h3>
+    <p class="lead">여기 정리한 점수와 해석은 '역량 개발 계획서'의 사전/사후 역량 측정 결과 칸에 옮겨 적으세요.</p>
+    <table>
+      <thead><tr><th style="width:96px">역량</th><th style="width:76px">사전</th><th style="width:76px">사후</th><th>변화·해석 (왜?)</th></tr></thead>
+      <tbody>
+        <tr><td class="k">A 이해</td><td><input type="text" class="numin" data-k="t2_pre_A" placeholder="-"></td><td><input type="text" class="numin" data-k="t2_post_A" placeholder="-"></td><td><input type="text" data-k="t2_why_A" placeholder="변화의 이유를 적어 보세요"></td></tr>
+        <tr><td class="k">B 윤리</td><td><input type="text" class="numin" data-k="t2_pre_B" placeholder="-"></td><td><input type="text" class="numin" data-k="t2_post_B" placeholder="-"></td><td><input type="text" data-k="t2_why_B" placeholder="변화의 이유를 적어 보세요"></td></tr>
+        <tr><td class="k">C 분석</td><td><input type="text" class="numin" data-k="t2_pre_C" placeholder="-"></td><td><input type="text" class="numin" data-k="t2_post_C" placeholder="-"></td><td><input type="text" data-k="t2_why_C" placeholder="변화의 이유를 적어 보세요"></td></tr>
+        <tr><td class="k">D 설계</td><td><input type="text" class="numin" data-k="t2_pre_D" placeholder="-"></td><td><input type="text" class="numin" data-k="t2_post_D" placeholder="-"></td><td><input type="text" data-k="t2_why_D" placeholder="변화의 이유를 적어 보세요"></td></tr>
+        <tr><td class="k">E 실행</td><td><input type="text" class="numin" data-k="t2_pre_E" placeholder="-"></td><td><input type="text" class="numin" data-k="t2_post_E" placeholder="-"></td><td><input type="text" data-k="t2_why_E" placeholder="변화의 이유를 적어 보세요"></td></tr>
+        <tr><td class="k">F 평가</td><td><input type="text" class="numin" data-k="t2_pre_F" placeholder="-"></td><td><input type="text" class="numin" data-k="t2_post_F" placeholder="-"></td><td><input type="text" data-k="t2_why_F" placeholder="변화의 이유를 적어 보세요"></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <span class="src">p.48~49 · [활동지] 세 가지 성찰 질문</span>
+    <h3>점수를 '나의 가치관'으로 — 교육 가치관 정립(A3)</h3>
+    <div style="margin-bottom:14px">
+      <label class="fld">① 교육적 활용 관점 — 나는 AI·디지털을 교육적으로 의미 있게 활용해 왔는가?</label>
+      <textarea data-k="t2_r1" data-q="[성찰①] 교육적 활용 관점 — AI·디지털을 의미 있게 활용해 왔는가?" style="min-height:56px" placeholder="한두 문장으로 적어 보세요."></textarea>
+    </div>
+    <div style="margin-bottom:14px">
+      <label class="fld">② 교사 주도성 — 기술에 끌려가지 않고 교사로서 주도적으로 판단해 왔는가?</label>
+      <textarea data-k="t2_r2" data-q="[성찰②] 교사 주도성 — 주도적으로 판단해 왔는가?" style="min-height:56px" placeholder="한두 문장으로 적어 보세요."></textarea>
+    </div>
+    <div>
+      <label class="fld">③ 역량 개발 방향 — 앞으로 나에게 필요한 역량 개발은 무엇인가?</label>
+      <textarea data-k="t2_r3" data-q="[성찰③] 역량 개발 방향 — 앞으로 필요한 역량 개발은?" style="min-height:56px" placeholder="한두 문장으로 적어 보세요."></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">p.50~51 · [활동지] 성장 메이트 인터뷰</span>
+    <h3>동료가 찾아 주는 나의 강점 (10분, 짝 활동)</h3>
+    <div class="ctx"><ul>
+      <li>① 내 프로파일과 성찰 답변을 짝에게 소개하기 (각 3분).</li>
+      <li>② 짝의 강점을 찾아 말해 주기 — “프로파일에서 이 부분이 돋보여요”.</li>
+      <li>③ 보완 역량을 위한 아이디어 하나씩 주고받기 (협력적 진단).</li>
+    </ul></div>
+    <div style="margin-bottom:14px">
+      <label class="fld">강점이 실제 수업에서 어떻게 발휘되었나요? (동료의 답 / 메모)</label>
+      <textarea data-k="t2_i1" data-q="[인터뷰] 강점이 실제 수업에서 어떻게 발휘되었나?" style="min-height:56px" placeholder="짝과 나눈 이야기를 메모해 보세요."></textarea>
+    </div>
+    <div style="margin-bottom:14px">
+      <label class="fld">보완하고 싶은 역량, 어떻게 도와줄까요? (주고받은 아이디어)</label>
+      <textarea data-k="t2_i2" data-q="[인터뷰] 보완 역량을 위한 아이디어" style="min-height:56px" placeholder="서로 주고받은 아이디어를 적어 보세요."></textarea>
+    </div>
+    <div>
+      <label class="fld">동료가 말하길, 나는 (&nbsp;&nbsp;&nbsp;&nbsp;) 하는 힘이 있다</label>
+      <input type="text" data-k="t2_i3" data-q="동료가 발견해 준 나의 숨은 강점" placeholder="동료가 발견해 준 나의 '숨은 강점'을 적어 보세요.">
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">p.52 · 강점·보완 역량 정리</span>
+    <h3>나의 진단, 한 문장으로 정리하기</h3>
+    <div class="ctx"><ul>
+      <li>강점 역량은 계획서의 '상위 역량' 칸에, 보완 역량은 '하위 역량' 칸에 그대로 기록합니다.</li>
+      <li>이 한 문장이 활동3 '성장 로드맵'의 첫 줄이 됩니다.</li>
+    </ul></div>
+    <label class="fld">“나는 (&nbsp;&nbsp;&nbsp;&nbsp;) 역량은 강하고, (&nbsp;&nbsp;&nbsp;&nbsp;) 역량을 키우고 싶다.”</label>
+    <textarea data-k="t2_onesent" data-q="나의 진단 한 문장 — 나는 (  ) 역량은 강하고 (  ) 역량을 키우고 싶다" style="min-height:56px" placeholder="빈칸을 채워 나의 문장으로 완성해 보세요. 내가 가장 키우고 싶은 단 하나의 역량은?"></textarea>
+  </div>
+
+  <div class="card">
+    <span class="src">p.53 · 후속 전문분야 방향 미리 보기</span>
+    <h3>강점·보완을 후속 성장과 연결</h3>
+    <div class="ctx"><ul>
+      <li>강점 역량을 더 살릴 분야는? 보완 역량을 채워 줄 분야는?</li>
+      <li>후속 전문분야(예시) — 인공지능 활용 선도교사 후속전문연수(구 터치교사단), 사회정서교육 선도교사, AIEDAP 마스터교원 등</li>
+      <li>자세한 과정·시수와 신청은 활동 4에서 안내합니다. 지금은 관심 분야 1~2개만 가볍게 메모해 둡니다.</li>
+    </ul></div>
+    <label class="fld">관심 가는 후속 분야 1~2개 메모</label>
+    <textarea data-k="t2_follow" data-q="관심 가는 후속 전문분야 1~2개 메모" style="min-height:56px" placeholder="메모한 관심 분야는 포트폴리오 '교사 맞춤형 전문성 개발 경로 탐색' 활동으로 이어집니다."></textarea>
+  </div>
+
+  <div class="card closing">
+    <span class="src">p.54 · 활동 2 정리</span>
+    <h2>진단에서 설계로</h2>
+    <p>오늘 우리는 <b>사후 진단과 사전 비교, 세 가지 성찰 질문</b>으로 나의 역량 변화를 해석했습니다. 숫자 너머의 이유를 읽어내며 <b>강점·보완 역량과 나의 교육 가치관이 또렷해졌습니다.</b></p>
+    <p>이제 이 결과를 바탕으로, '무엇을 어떻게 키울지' 구체적 계획을 세울 차례입니다. 다음 활동(활동 3)에서 <b>맞춤형 전문성 개발 경로 — 나만의 성장 로드맵</b>을 그려 봅니다.</p>
+    <div class="flow">돌아봄(활동1) → 진단(활동2) → 설계(활동3) → 실천·연대(활동4)</div>
+    <label class="fld" style="margin-bottom:8px">잠깐 점검!</label>
+    <div class="checks">
+      <label class="chk"><input type="checkbox" data-k="t2_c4"><span>사후 대시보드 캡쳐를 포트폴리오에 붙여 넣고 제출 링크로 제출했나요?</span></label>
+    </div>
+  </div>
+
+</section>
+
+<!-- ════════════════════════════ 27차시 ════════════════════════════ -->
+<section class="lesson" data-lesson="27">
+
+  <div class="section-head">
+    <div class="num">3</div>
+    <div class="tx">
+      <div class="step">27차시 · 활동 3 (p.55)</div>
+      <h2>맞춤형 전문성 개발 경로 설계</h2>
+      <p>진단 결과(현재 위치)에서 출발하는 나만의 성장 내비게이션 — 성장 로드맵을 완성합니다.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">p.56~57 · 왜 성장 로드맵인가</span>
+    <h3>연수가 끝나면, 성장도 끝날까요?</h3>
+    <div class="ctx"><ul>
+      <li>막연한 다짐은 작심삼일, <b>기록된 로드맵은 실천</b>이 됩니다.</li>
+      <li>로드맵 = 진단 결과(현재 위치)에서 출발하는 나만의 성장 내비게이션.</li>
+      <li>순서 : 진단(G2.1) → 경로 설계(G2.2) → 학습 자원 확보(G2.3).</li>
+      <li>오늘 작성하는 로드맵이 곧 포트폴리오의 'AI·디지털 역량 개발 계획서'입니다.</li>
+    </ul></div>
+    <div style="margin-bottom:14px">
+      <label class="fld">1년 뒤, 나는 어떤 역량을 갖춘 교사로 변화해 있을까?</label>
+      <textarea data-k="t3_q1" data-q="1년 뒤, 나는 어떤 역량을 갖춘 교사로 변화해 있을까?" style="min-height:56px" placeholder="내가 되고 싶은 교사의 모습을 그려 보세요."></textarea>
+    </div>
+    <div>
+      <label class="fld">지금 나에게 가장 시급한 '단 하나의 역량'은 무엇인가?</label>
+      <textarea data-k="t3_q2" data-q="지금 나에게 가장 시급한 '단 하나의 역량'은?" style="min-height:56px" placeholder="활동2에서 확인한 강점·보완 역량과 성찰 답을 떠올려 보세요."></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">p.58~59 · 설계 원리 ①② — 선택과 집중 · 내 문제와 연결</span>
+    <h3>모두 잘하려는 욕심이 포기를 부릅니다</h3>
+    <div class="ctx"><ul>
+      <li><b>우선순위 역량 1~2개만</b> — 모든 역량을 한꺼번에 개발하려 하지 않습니다.</li>
+      <li>가장 시급하고, 내가 가장 잘할 수 있는 1~2가지에 집중합니다.</li>
+      <li><b>내 교실·교과의 문제와 연결</b> — 지금 겪는 문제 해결을 역량 개발 목표로. (예: 느린 학습자 지도, 토론 수업 활성화, 평가 피드백 부담 줄이기)</li>
+      <li>화려한 기술을 배우는 계획보다, 현장 문제를 푸는 과정이 곧 전문성 개발입니다.</li>
+    </ul></div>
+    <div style="margin-bottom:14px">
+      <label class="fld">올해 내가 집중할 우선순위 역량 1~2개는?</label>
+      <input type="text" data-k="t3_q3" data-q="올해 집중할 우선순위 역량 1~2개" placeholder="예) C. 분석, F. 평가">
+    </div>
+    <div>
+      <label class="fld">올해 꼭 풀고 싶은 우리 학급·교과의 문제 하나는?</label>
+      <textarea data-k="t3_q4" data-q="올해 꼭 풀고 싶은 우리 학급·교과의 문제 하나" style="min-height:56px" placeholder="학생의 필요(Need)와 나의 흥미(Want)가 만나는 지점을 찾아보세요."></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">p.60~61 · [활동지] 성장 스윗 스팟(Sweet Spot) 찾기</span>
+    <h3>학생의 필요와 나의 흥미를 적고 교집합을 찾습니다</h3>
+    <div class="ctx"><ul>
+      <li>[A] 학생의 필요(Need) — 예) 기초학력, 참여 저조, 표현력 등 현장 과제</li>
+      <li>[B] 나의 흥미(Want) — 예) 생성형 AI, 데이터 분석, 게임 기반 학습 등</li>
+      <li>두 원이 겹치는 교집합 = 지속 가능한 성장의 우선순위(Priority). 예) “생성형 AI를 활용해(Want) 느린 학습자 맞춤 문제(Need) 만들기”</li>
+    </ul></div>
+    <div class="grid2">
+      <div>
+        <label class="fld" style="color:var(--warn)">[A] 학생의 필요 (Need)</label>
+        <input type="text" data-k="t3_need1" placeholder="1." style="margin-bottom:8px">
+        <input type="text" data-k="t3_need2" placeholder="2." style="margin-bottom:8px">
+        <input type="text" data-k="t3_need3" placeholder="3.">
+      </div>
+      <div>
+        <label class="fld" style="color:var(--brand)">[B] 나의 흥미 (Want)</label>
+        <input type="text" data-k="t3_want1" placeholder="1." style="margin-bottom:8px">
+        <input type="text" data-k="t3_want2" placeholder="2." style="margin-bottom:8px">
+        <input type="text" data-k="t3_want3" placeholder="3.">
+      </div>
+    </div>
+    <div style="margin-top:16px">
+      <label class="fld" style="color:var(--accent)">★ 최우선 성장 목표 (A×B 연결)</label>
+      <textarea data-k="t3_goal" data-q="★ 최우선 성장 목표 (Need×Want 연결)" style="min-height:56px" placeholder="예) 생성형 AI를 활용해 느린 학습자 맞춤 문제 만들기"></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">p.62~64 · [활동지] 나의 연간 성장 로드맵</span>
+    <h3>단기 / 중기 / 장기, 시기별 실행 계획을 작성합니다</h3>
+    <div class="ctx green"><ul>
+      <li><b>작성 예시</b> — 성장 목표 : 학습 데이터를 읽고 맞춤 피드백을 주는 교사 되기 (C·F 역량 보완)</li>
+      <li>1~2개월 : 데이터 기반 수업 원격연수 수강, AI 도구 분석 기능 익히기</li>
+      <li>3~4개월 : 한 단원에서 데이터 기반 피드백 적용, e-포트폴리오에 기록</li>
+      <li>5~6개월 : 성장 메이트와 결과 공유, 다음 학기 확장 계획 수립</li>
+      <li>6개월 실행 계획을 중심으로, 중장기 방향은 한 줄 메모로 둡니다.</li>
+    </ul></div>
+    <table>
+      <thead><tr><th style="width:150px">시기</th><th>구체적 실행 계획 (Action Item)</th></tr></thead>
+      <tbody>
+        <tr><td class="k">단기 (1학기)</td><td><textarea data-k="t3_road_s" placeholder="예) 관련 연수 1개 이수, 동료 수업 참관 …"></textarea></td></tr>
+        <tr><td class="k">중기 (2학기)</td><td><textarea data-k="t3_road_m" placeholder="예) 배운 도구로 수업 1개 재구성, 학생 반응 데이터 모으기 …"></textarea></td></tr>
+        <tr><td class="k">장기 (1년 후)</td><td><textarea data-k="t3_road_l" placeholder="예) 수업 사례 나눔, 나만의 노하우 자료집 만들기 …"></textarea></td></tr>
+      </tbody>
+    </table>
+    <p class="lead" style="margin-top:10px">완성한 계획은 포트폴리오 '역량 개발 계획서'의 단기·중기·장기 칸에 옮겨 작성하세요.</p>
+  </div>
+
+  <div class="card">
+    <span class="src">p.65~66 · 로드맵 작성 + 선도교사 컨설팅</span>
+    <h3>컨설팅은 '평가'가 아니라 함께 길을 찾는 협력적 진단</h3>
+    <div class="ctx"><ul>
+      <li>“이 목표, 6개월 안에 현실적으로 가능할까요?”</li>
+      <li>“이 역량엔 어떤 연수·도구가 좋을까요?”</li>
+      <li>“제 강점(&nbsp;&nbsp;)을 이 목표에 어떻게 활용할 수 있을까요?”</li>
+      <li>“작심삼일이 되지 않으려면 무엇을 준비해야 할까요?”</li>
+    </ul></div>
+    <label class="fld">내 로드맵에서 가장 자신 없는 부분은? (컨설팅에서 물어볼 것 · 받은 조언 메모)</label>
+    <textarea data-k="t3_consult" data-q="컨설팅에서 물어볼 것 · 받은 조언 메모" placeholder="고민되는 지점과 선도교사 강사님께 받은 조언을 메모해 보세요."></textarea>
+  </div>
+
+  <div class="card">
+    <span class="src">p.67~68 · [활동지] 나만의 학습 플레이리스트</span>
+    <h3>성장을 도울 자원을 구체적인 이름으로 적습니다</h3>
+    <table>
+      <thead><tr><th style="width:150px">구분</th><th>학습 자원 (구체적인 이름)</th></tr></thead>
+      <tbody>
+        <tr><td class="k">연수 플랫폼</td><td><input type="text" data-k="t3_pl1" placeholder="예) 지식샘터, 중앙교육연수원 …"></td></tr>
+        <tr><td class="k">커뮤니티/채널</td><td><input type="text" data-k="t3_pl2" placeholder="예) 교과·주제별 교사 연구회, 온라인 교사 커뮤니티, 교사 유튜버 …"></td></tr>
+        <tr><td class="k">AI 파트너 도구</td><td><input type="text" data-k="t3_pl3" placeholder="예) 수업 설계를 도와줄 생성형 AI, 콘텐츠 제작 도구 …"></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <span class="src">p.69~70 · [활동지] 성장 걸림돌 제거</span>
+    <h3>예상 장애물과 극복 방안을 미리 적어 둡니다</h3>
+    <div class="ctx"><ul>
+      <li>예상 장애물 — 학기 초 업무 폭탄, 기기·시간 부족, 동료 무관심 등</li>
+      <li>극복 방안 — 하루 10분만 투자, 동료와 주 1회 티타임, 작게 시작하기 등</li>
+      <li>장애물을 미리 적어 두면, 닥쳤을 때 포기하지 않습니다. 계획을 유연하게 조정하는 것 자체가 G역량입니다.</li>
+    </ul></div>
+    <table>
+      <thead><tr><th style="width:50%">예상 장애물</th><th>나의 극복 방안</th></tr></thead>
+      <tbody>
+        <tr><td><input type="text" data-k="t3_ob1" placeholder="장애물 1"></td><td><input type="text" data-k="t3_sol1" placeholder="극복 방안 1"></td></tr>
+        <tr><td><input type="text" data-k="t3_ob2" placeholder="장애물 2"></td><td><input type="text" data-k="t3_sol2" placeholder="극복 방안 2"></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <span class="src">p.71~72 · 로드맵 공유·상호 피드백 · 성장 메이트 결연</span>
+    <h3>혼자가 아니라, 함께</h3>
+    <div class="ctx"><ul>
+      <li>피드백 관점 — 실현 가능한가? 내 문제와 연결되는가? 빠진 지원 자원은?</li>
+      <li>받은 피드백을 반영해 로드맵을 바로 수정·보완합니다.</li>
+      <li>경력·저경력이 서로 배우는 상호 멘토링 — 기술은 저경력이, 맥락은 경력이.</li>
+    </ul></div>
+    <div style="margin-bottom:14px">
+      <label class="fld">받은 피드백 한 가지와 로드맵에 반영한 내용</label>
+      <textarea data-k="t3_fb" data-q="받은 피드백 한 가지와 로드맵에 반영한 내용" style="min-height:56px" placeholder="동료 피드백과 수정 사항을 적어 보세요."></textarea>
+    </div>
+    <div>
+      <label class="fld">나의 성장 메이트 · 연락 방법</label>
+      <input type="text" data-k="t3_mate" data-q="나의 성장 메이트 · 연락 방법" placeholder="예) ○○중 ○○○ 선생님 · 단체 메신저방">
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">p.73~74 · [활동지] 교사 전문성 성장 선언</span>
+    <h3>빈칸을 채워 나의 성장 선언문을 완성합니다</h3>
+    <div class="ctx green"><ul>
+      <li>“나는 AI·디지털 대전환의 시기, 두려움보다 호기심으로, 고립보다 연대를 선택하겠습니다.”</li>
+    </ul></div>
+    <div class="grid2">
+      <div>
+        <label class="fld">나는 2026년, (&nbsp;&nbsp;&nbsp;&nbsp;) 역량을 집중적으로 키워…</label>
+        <input type="text" data-k="t3_d1" data-q="[성장 선언] 집중적으로 키울 역량" placeholder="예) C. 분석과 F. 평가">
+      </div>
+      <div>
+        <label class="fld">…우리 학급·교과 학생들의 (&nbsp;&nbsp;&nbsp;&nbsp;)을/를 돕는 교사가 되겠습니다.</label>
+        <input type="text" data-k="t3_d2" data-q="[성장 선언] 도울 학생의 모습" placeholder="예) 스스로 배우는 힘">
+      </div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <div class="num green">4</div>
+    <div class="tx">
+      <div class="step">27차시 · 활동 4 (p.76)</div>
+      <h2>후속 연수·지원 연계 및 연수 마무리</h2>
+      <p>'나 홀로 혁신'의 한계를 넘어 — 지속 가능한 성장 생태계의 '시작'을 만듭니다.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">p.77~79 · 함께 멀리 가기 · 성장의 선순환 · 학습공동체(PLC)</span>
+    <h3>끝이 아니라 다시 시작</h3>
+    <div class="ctx"><ul>
+      <li>혼자 해결하려다 포기했던 수업 고민, 동료와 나누면 길이 보입니다.</li>
+      <li>이해(G1) → 계획(G2) → 실천(G3) → 다시 더 높은 수준의 이해로 — 나선형 성장 구조.</li>
+      <li>전문적 학습공동체(PLC) — 관심 주제별로 모여 함께 수업을 설계·실행, 공동 수업 설계(Co-design).</li>
+      <li>수업을 공개하고 피드백을 주고받을 '수업 친구'를 만듭니다.</li>
+    </ul></div>
+    <label class="fld">동료와 함께라서 해낼 수 있었던 경험이 있나요? / 나와 관심사가 닿는 동료는 누구인가?</label>
+    <textarea data-k="t3_q5" data-q="동료와 함께라서 해낼 수 있었던 경험 · 관심사가 닿는 동료" placeholder="함께의 힘을 느꼈던 순간을 적어 보세요."></textarea>
+  </div>
+
+  <div class="card">
+    <span class="src">p.80 · [활동지] 마이크로 PLC — 어려움 공유 (롤링 페이퍼)</span>
+    <h3>나의 고민을 적고, 동료들이 한 줄 조언을 더합니다</h3>
+    <div class="ctx"><ul>
+      <li>예) AI 도구를 썼더니 학생들이 더 산만해졌어요. 어떻게 집중시킬까요?</li>
+    </ul></div>
+    <div style="margin-bottom:14px">
+      <label class="fld">나의 고민</label>
+      <textarea data-k="t3_worry" data-q="[마이크로 PLC] 나의 고민" style="min-height:56px" placeholder="지금 나의 수업 고민을 적어 보세요."></textarea>
+    </div>
+    <label class="fld">동료들의 한 줄 조언 (Rolling Paper)</label>
+    <input type="text" data-k="t3_adv1" data-q="동료 A의 조언" placeholder="동료 A :" style="margin-bottom:8px">
+    <input type="text" data-k="t3_adv2" data-q="동료 B의 조언" placeholder="동료 B :" style="margin-bottom:8px">
+    <input type="text" data-k="t3_adv3" data-q="동료 C의 조언" placeholder="동료 C :">
+  </div>
+
+  <div class="card">
+    <span class="src">p.81 · [활동지] 공동 수업 설계</span>
+    <h3>동료(소그룹)와 관심 주제로 1차시 뼈대를 함께 만듭니다</h3>
+    <table>
+      <thead><tr><th style="width:80px">단계</th><th style="width:38%">활용할 AI·디지털 도구</th><th>교사의 핵심 발문/활동</th></tr></thead>
+      <tbody>
+        <tr><td class="k">도입</td><td><input type="text" data-k="t3_co_t1" placeholder="예) 실시간 응답 도구"></td><td><input type="text" data-k="t3_co_a1" placeholder="흥미를 어떻게 끌 것인가?"></td></tr>
+        <tr><td class="k">전개</td><td><input type="text" data-k="t3_co_t2" placeholder="예) AI 튜터·협업 보드"></td><td><input type="text" data-k="t3_co_a2" placeholder="개별 맞춤 지원을 어떻게?"></td></tr>
+        <tr><td class="k">정리</td><td><input type="text" data-k="t3_co_t3" placeholder="예) 공유 보드"></td><td><input type="text" data-k="t3_co_a3" placeholder="배움을 어떻게 정리·공유?"></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <span class="src">p.82~83 · [활동지] 5분 나눔 마켓</span>
+    <h3>아주 사소한 노하우라도 '지식 상품'으로 등록해 보세요</h3>
+    <div class="ctx"><ul>
+      <li>'완벽한 자료'가 아니라 '생생한 실패와 극복의 과정'이 더 큰 도움이 됩니다.</li>
+      <li>공유는 뺄셈이 아니라 덧셈 — 나눌수록 나의 전문성도 단단해집니다.</li>
+      <li>공유 전, 저작권·초상권·AI 윤리·접근성을 한 번 더 점검합니다.</li>
+    </ul></div>
+    <div class="grid2">
+      <div>
+        <label class="fld">상품명 (나의 노하우)</label>
+        <input type="text" data-k="t3_mk1" data-q="[나눔 마켓] 상품명 (나의 노하우)" placeholder="예) 캔바 단축키 3개, 뤼튼 프롬프트 1줄 …">
+      </div>
+      <div>
+        <label class="fld">핵심 효용</label>
+        <input type="text" data-k="t3_mk2" data-q="[나눔 마켓] 핵심 효용" placeholder="누군가의 (수업 준비 시간)을 줄이고 (수업의 질)을 높인다">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">p.84 · [활동지] 공유 채널 탐색</span>
+    <h3>나의 자료를 확산시킬 채널을 선택해 보세요</h3>
+    <div class="checks">
+      <label class="chk"><input type="checkbox" data-k="t3_ch1"><span>교내 메신저·동학년 (가장 가깝고 빠른 공유)</span></label>
+      <label class="chk"><input type="checkbox" data-k="t3_ch2"><span>온라인 교사 커뮤니티 (집단지성의 장)</span></label>
+      <label class="chk"><input type="checkbox" data-k="t3_ch3"><span>개인 SNS·블로그·유튜브 (퍼스널 브랜딩)</span></label>
+      <label class="chk"><input type="checkbox" data-k="t3_ch4"><span>교육청 수업 나눔 플랫폼 (공적 기여)</span></label>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">p.85~86 · [활동지] 데이터 리터러시 연습</span>
+    <h3>감(感)이 아닌 데이터(Data)로 수업 보기</h3>
+    <div class="ctx"><ul>
+      <li>AI 수업 분석 도구는 감시 도구가 아니라 <b>'성찰의 거울'</b>입니다.</li>
+      <li>가상 수업 분석 결과 : <b>교사 발화 70% · 학생 침묵 20% · 학생 상호작용 10%</b></li>
+      <li>경험에 의존한 직관적 성찰을, 증거 기반 성찰로 고도화합니다.</li>
+    </ul></div>
+    <div style="margin-bottom:14px">
+      <label class="fld">데이터가 말해주는 사실 (Fact)</label>
+      <textarea data-k="t3_fact" data-q="[데이터 리터러시] 데이터가 말해주는 사실(Fact)" style="min-height:56px" placeholder="위 가상 분석 결과에서 읽어낼 수 있는 사실을 적어 보세요."></textarea>
+    </div>
+    <div style="margin-bottom:14px">
+      <label class="fld">개선 전략 (Action)</label>
+      <textarea data-k="t3_action" data-q="[데이터 리터러시] 개선 전략(Action)" style="min-height:56px" placeholder="이 수업을 어떻게 바꾸면 좋을까요?"></textarea>
+    </div>
+    <div>
+      <label class="fld">내 수업에서 확인하고 싶은 데이터 &amp; 그 이유</label>
+      <textarea data-k="t3_mydata" data-q="내 수업에서 확인하고 싶은 데이터와 그 이유" style="min-height:56px" placeholder="예) 학생별 발언 빈도 — 조용한 학생의 참여를 확인하고 싶어서"></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">p.87~90 · 후속 전문분야 연수 · 개인별 후속 지원 체계</span>
+    <h3>연수 이후, 더 깊이 ('26.9월~)</h3>
+    <div class="ctx"><ul>
+      <li>① 인공지능 활용 선도교사 후속전문연수(구 터치교사단) — 21H</li>
+      <li>② 사회정서교육 선도교사 양성 연수 — 15H</li>
+      <li>③ AIEDAP 마스터교원 양성 연수 — 35H 내외</li>
+      <li>멘토 매칭·성장 메이트·자율적 교사학습공동체(PLC) 등 후속 지원이 이어집니다.</li>
+      <li>한 번에 다 하려 하지 말고, 올해의 '한 걸음'으로 하나만 선택해도 충분합니다.</li>
+    </ul></div>
+    <div class="grid2">
+      <div>
+        <label class="fld" for="t3_next">올해 도전할 후속 연수 1개</label>
+        <select id="t3_next" data-k="t3_next" data-q="올해 도전할 후속 연수">
+          <option value="">— 선택 —</option>
+          <option>① 인공지능 활용 선도교사 후속전문연수 (21H)</option>
+          <option>② 사회정서교육 선도교사 양성 연수 (15H)</option>
+          <option>③ AIEDAP 마스터교원 양성 연수 (35H 내외)</option>
+          <option>아직 고민 중</option>
+        </select>
+      </div>
+      <div>
+        <label class="fld" for="t3_nextwhy">선택 이유 (나의 강점·보완과 연결)</label>
+        <textarea id="t3_nextwhy" data-k="t3_nextwhy" data-q="후속 연수 선택 이유" style="min-height:48px" placeholder="내 로드맵의 우선순위 역량과 어떻게 이어지나요?"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">p.91 · [활동지] 성찰 에세이 — Before &amp; After</span>
+    <h3>연수 전과 후의 나를 비교해 적어 봅니다</h3>
+    <table>
+      <thead><tr><th style="width:110px">구분</th><th>연수 이전의 나 (Before)</th><th>연수 이후의 나 (After)</th></tr></thead>
+      <tbody>
+        <tr><td class="k">마음가짐</td>
+            <td><textarea data-k="t3_e1b" placeholder="예) AI가 두려웠다"></textarea></td>
+            <td><textarea data-k="t3_e1a" placeholder="예) AI가 수업 파트너로 느껴진다"></textarea></td></tr>
+        <tr><td class="k">수업 설계</td>
+            <td><textarea data-k="t3_e2b" placeholder="예) 진도 나가기 급급"></textarea></td>
+            <td><textarea data-k="t3_e2a" placeholder="지금은 어떻게 달라졌나요?"></textarea></td></tr>
+        <tr><td class="k">동료 관계</td>
+            <td><textarea data-k="t3_e3b" placeholder="이전에는 어땠나요?"></textarea></td>
+            <td><textarea data-k="t3_e3a" placeholder="지금은 어떻게 달라졌나요?"></textarea></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <span class="src">p.92~93 · 최종 계획안 공유 · 성장 다짐 선언</span>
+    <h3>27차시를 회고하고, 로드맵을 발표합니다</h3>
+    <div class="ctx"><ul>
+      <li>완성한 성장 로드맵(최종 계획안)을 동료와 발표·공유하고 상호 피드백·격려로 실천 의지를 다집니다.</li>
+      <li>발표는 평가가 아니라, 서로의 출발을 축하하는 자리입니다.</li>
+      <li>“나는 (&nbsp;&nbsp;) 역량을 키워 (&nbsp;&nbsp;) 수업을 만들겠습니다.” — 빈칸을 채워 전체와 공유합니다.</li>
+    </ul></div>
+    <div style="margin-bottom:14px">
+      <label class="fld">내 발표에서 동료에게 꼭 전하고 싶은 한 마디는?</label>
+      <input type="text" data-k="t3_word" data-q="발표에서 동료에게 전하고 싶은 한 마디" placeholder="동료들에게 전하고 싶은 응원·다짐 한 마디">
+    </div>
+    <div class="grid2">
+      <div>
+        <label class="fld">나는 (&nbsp;&nbsp;&nbsp;&nbsp;) 역량을 키워…</label>
+        <input type="text" data-k="t3_v1" data-q="[성장 다짐] 키울 역량" placeholder="예) 데이터 분석">
+      </div>
+      <div>
+        <label class="fld">…(&nbsp;&nbsp;&nbsp;&nbsp;) 수업을 만들겠습니다.</label>
+        <input type="text" data-k="t3_v2" data-q="[성장 다짐] 만들 수업" placeholder="예) 한 명도 놓치지 않는">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">p.94 · [활동지] 체인지 메이커 선언</span>
+    <h3>빈칸을 채워 나의 다짐을 완성하고 서명합니다</h3>
+    <div class="ctx green"><ul>
+      <li>“이 연수는 끝이 아니라 새로운 시작입니다.”</li>
+    </ul></div>
+    <div style="margin-bottom:14px">
+      <label class="fld">나는 동료와 함께 (&nbsp;&nbsp;&nbsp;&nbsp;) 하는 교사로 계속 성장하겠습니다.</label>
+      <input type="text" data-k="t3_cm1" data-q="[체인지 메이커 선언] 동료와 함께 (  ) 하는 교사" placeholder="빈칸을 채워 보세요">
+    </div>
+    <div>
+      <label class="fld">나의 다음 첫 발자국 (Action Item)</label>
+      <textarea data-k="t3_cm2" data-q="[체인지 메이커 선언] 나의 다음 첫 발자국(Action Item)" style="min-height:56px" placeholder="연수 후 가장 먼저 실천할 한 가지를 적어 보세요."></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="src">p.95 · 스스로 점검해 봅시다</span>
+    <h3>오늘의 배움 점검 — 나는 할 수 있나요?</h3>
+    <p class="lead">체크하기 어려운 항목이 바로 다음 성장의 시작점입니다.</p>
+    <div class="checks">
+      <label class="chk"><input type="checkbox" data-k="t3_ck1"><span>사전·사후 진단을 비교해 나의 성장과 보완점을 설명할 수 있다.</span></label>
+      <label class="chk"><input type="checkbox" data-k="t3_ck2"><span>우선순위 역량을 담은 6개월 실행 계획 로드맵을 작성했다.</span></label>
+      <label class="chk"><input type="checkbox" data-k="t3_ck3"><span>교육적 활용 관점과 교사 주도성을 성찰하고 실천 다짐을 세웠다.</span></label>
+      <label class="chk"><input type="checkbox" data-k="t3_ck4"><span>사후 역량 대시보드 캡쳐와 역량 개발 계획서를 포트폴리오에 기록·제출했다.</span></label>
+    </div>
+  </div>
+
+  <div class="card closing">
+    <span class="src">p.96 · 연수를 마치며</span>
+    <h2>끝이 아니라, 현장 실천의 출발점</h2>
+    <p><b>돌아봄(활동1) → 진단(활동2) → 설계(활동3) → 실천·연대(활동4)</b>의 여정을 마칩니다. 오늘 그린 로드맵과 맺은 연대가, 내일의 수업을 바꿉니다.</p>
+    <p>남은 포트폴리오 일정 — <b>만족도 조사(7월 19일~25일)</b> → 수업 실천 후 <b>'인공지능 활용 수업 실천 보고서'</b> 작성. 수고하셨습니다. 우리는 이제 서로의 성장 메이트입니다.</p>
+    <div class="flow">본 차시는 연수의 끝이 아닌, 현장으로 잇는 '출발선'입니다</div>
+    <label class="fld" for="t3_final">27차시 연수를 마치며 — 나에게 남기는 한 문장</label>
+    <textarea id="t3_final" data-k="t3_final" data-q="27차시 연수를 마치며 — 나에게 남기는 한 문장" style="min-height:56px" placeholder="1년 뒤의 나에게, 오늘의 나는 어떤 약속을 남길까?"></textarea>
+  </div>
+
+</section>
+
+  <div class="site-foot">
+    2026년 인공지능 활용 선도교사 연수 · 집합⑬ AI·디지털 역량 진단 및 전문성 개발 경로 설계<br>
+    <b>제작자 : 아주중 송세호(송쌤과학)</b>
+  </div>
+
+</div>
+
+<!-- 하단 바 -->
+<div class="bar">
+  <span class="status" id="status">작성 내용은 이 브라우저에 자동 저장됩니다.</span>
+  <button class="btn-ghost" id="btn-reset">전체 지우기</button>
+  <button class="btn-primary" id="btn-pdf">📄 25차시 PDF 저장</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- 인쇄 전용 영역 -->
+<div id="print-root"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  const CREDIT = "제작자 : 아주중 송세호(송쌤과학)";
+
+  const COMPS25 = [
+    ["A","교육 이해 (철학·본질·필요성 인식)"],
+    ["B","윤리적 실천 (디지털 규범·시민성·안전)"],
+    ["C","수업·학습자 분석 (데이터 해석·학생 이해)"],
+    ["D","설계 (수업 디자인·맞춤형 경로 설계)"],
+    ["E","실행 (상호작용 촉진·디지털 도구 활용)"],
+    ["F","평가 (과정중심평가·데이터 기반 피드백)"]
+  ];
+  const COMPS26 = [
+    ["A","AI·디지털 교육이 '왜' 필요한지 내 언어로 설명할 수 있는가?"],
+    ["B","저작권·AI 윤리·데이터 안전 원칙을 수업에 적용하는가?"],
+    ["C","LMS·AI 도구 데이터로 학생의 학습 상태를 진단할 수 있는가?"],
+    ["D","학생 맞춤형 경로·참여형 수업을 디지털로 설계할 수 있는가?"],
+    ["E","수업 중 기기 문제·학생 상호작용을 유연하게 조율하는가?"],
+    ["F","과정중심평가에 AI 도구로 즉각 피드백을 주는가?"]
+  ];
+
+  /* ── 자가점수 표 생성 ─────────────────── */
+  function buildScoreRows(tbodyId, prefix, comps, note){
+    const tb = document.getElementById(tbodyId);
+    comps.forEach(([code,label])=>{
+      const tr = document.createElement("tr");
+      let cells = "";
+      for(let v=1; v<=5; v++){
+        const id = `${prefix}_${code}_${v}`;
+        cells += `<input type="radio" name="${prefix}_${code}" id="${id}" value="${v}" data-k="${prefix}_${code}"><label for="${id}">${v}</label>`;
+      }
+      tr.innerHTML =
+        `<td class="k" style="width:52px; text-align:center">${code}</td>` +
+        `<td>${label}</td>` +
+        `<td><div class="score-row">${cells}</div><div class="scale-note">${note}</div></td>`;
+      tb.appendChild(tr);
+    });
+  }
+  buildScoreRows("tb-s25","s",COMPS25,"1 낯설다 ~ 5 능숙하다");
+  buildScoreRows("tb-s26","t2s",COMPS26,"1 부족 ~ 5 탁월");
+
+  /* ── 레이더(별자리/육각형) ─────────────── */
+  const R = {cx:150, cy:150, r:105};
+  function scores(prefix){
+    return COMPS25.map(([c])=>{
+      const el = document.querySelector(`input[name="${prefix}_${c}"]:checked`);
+      return el ? +el.value : 0;
+    });
+  }
+  function pt(i, val){
+    const ang = -Math.PI/2 + i * (2*Math.PI/6);
+    const d = R.r * (val/5);
+    return [R.cx + d*Math.cos(ang), R.cy + d*Math.sin(ang)];
+  }
+  function radarSVG(prefix){
+    const vals = scores(prefix);
+    const filled = vals.some(v=>v>0);
+    let g = "";
+    for(let ring=1; ring<=5; ring++){
+      const pts = COMPS25.map((_,i)=>pt(i, ring).map(n=>n.toFixed(1)).join(",")).join(" ");
+      g += `<polygon points="${pts}" fill="${ring===5?'#f0f3fb':'none'}" stroke="#dbe1ee" stroke-width="1"/>`;
+    }
+    COMPS25.forEach((_,i)=>{
+      const [x,y] = pt(i,5);
+      g += `<line x1="${R.cx}" y1="${R.cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="#dbe1ee" stroke-width="1"/>`;
+    });
+    if(filled){
+      const dpts = vals.map((v,i)=>pt(i, v||0.15).map(n=>n.toFixed(1)).join(",")).join(" ");
+      g += `<polygon points="${dpts}" fill="rgba(52,87,213,.22)" stroke="#3457d5" stroke-width="2.5" stroke-linejoin="round"/>`;
+      vals.forEach((v,i)=>{
+        if(!v) return;
+        const [x,y] = pt(i,v);
+        g += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5" fill="#3457d5" stroke="#fff" stroke-width="1.5"/>`;
+      });
+    }
+    COMPS25.forEach(([code],i)=>{
+      const [x,y] = pt(i, 5.9);
+      g += `<text x="${x.toFixed(1)}" y="${(y+5).toFixed(1)}" text-anchor="middle"
+              font-size="15" font-weight="700" fill="#5b6479"
+              font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif">${code}</text>`;
+    });
+    return `<svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">${g}</svg>`;
+  }
+  function drawRadars(){
+    document.getElementById("radar25").innerHTML = radarSVG("s");
+    document.getElementById("radar26").innerHTML = radarSVG("t2s");
+  }
+
+  /* ── 차시 탭 ─────────────────────────── */
+  let cur = "25";
+  const LESSON_TITLE = {
+    "25":{act:"활동 1", name:"1번~12번 연수 돌아보기", file:"돌아보기"},
+    "26":{act:"활동 2", name:"AI·디지털 역량 심층 진단", file:"심층진단"},
+    "27":{act:"활동 3·4", name:"전문성 개발 경로 설계·연수 마무리", file:"경로설계"}
+  };
+  function showLesson(n){
+    cur = n;
+    document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on", b.dataset.t===n));
+    document.querySelectorAll(".lesson").forEach(s=>s.classList.toggle("on", s.dataset.lesson===n));
+    document.getElementById("btn-pdf").textContent = `📄 ${n}차시 PDF 저장`;
+    try{ localStorage.setItem("keris13_tab", n); }catch(e){}
+    window.scrollTo({top:0, behavior:"instant"});
+  }
+  document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>showLesson(b.dataset.t)));
+
+  /* ── 저장 / 복원 ──────────────────────── */
+  const KEY = "keris13_full_v1";
+  const fields = () => document.querySelectorAll("[data-k]");
+
+  function save(){
+    const d = {};
+    fields().forEach(el=>{
+      const k = el.dataset.k;
+      if(el.type === "checkbox"){ d[k] = el.checked; }
+      else if(el.type === "radio"){ if(el.checked) d[k] = el.value; }
+      else { d[k] = el.value; }
+    });
+    try{ localStorage.setItem(KEY, JSON.stringify(d)); }catch(e){}
+  }
+  function load(){
+    let d;
+    try{ d = JSON.parse(localStorage.getItem(KEY) || "{}"); }catch(e){ return; }
+    fields().forEach(el=>{
+      const v = d[el.dataset.k];
+      if(v === undefined) return;
+      if(el.type === "checkbox"){ el.checked = !!v; }
+      else if(el.type === "radio"){ el.checked = (el.value === v); }
+      else { el.value = v; }
+    });
+  }
+
+  let t;
+  document.addEventListener("input", ()=>{
+    clearTimeout(t);
+    t = setTimeout(()=>{ save(); setStatus("자동 저장됨 · " + new Date().toLocaleTimeString("ko-KR")); }, 400);
+    drawRadars();
+  });
+  document.addEventListener("change", ()=>{ save(); drawRadars(); });
+
+  function setStatus(msg){ document.getElementById("status").textContent = msg; }
+  function toast(msg){
+    const el = document.getElementById("toast");
+    el.textContent = msg; el.classList.add("on");
+    setTimeout(()=>el.classList.remove("on"), 2200);
+  }
+
+  /* ── PDF 공통 헬퍼 ─────────────────────── */
+  const val = k => (document.querySelector(`[data-k="${k}"]`)?.value || "").trim();
+  const chk = k => !!document.querySelector(`[data-k="${k}"]`)?.checked;
+  const esc = s => String(s).replace(/[&<>]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+  const br  = s => esc(s).replace(/\n/g,"<br>");
+
+  function qa(k){
+    const el = document.querySelector(`[data-k="${k}"]`);
+    if(!el) return "";
+    const v = (el.value || "").trim();
+    if(!v) return "";
+    return `<div class="p-item"><p class="p-q">${esc(el.dataset.q || "")}</p><p class="p-a">${esc(v)}</p></div>`;
+  }
+  function sec(title, body){
+    return body.trim() ? `<div class="p-sec">${esc(title)}</div>${body}` : "";
+  }
+  // rows: [[label, key], ...] → 2열 표 (빈 행 제외)
+  function tbl2(h1, h2, rows){
+    const filled = rows.filter(([,k])=>val(k));
+    if(!filled.length) return "";
+    return `<div class="p-item"><table><thead><tr><th style="width:28%">${esc(h1)}</th><th>${esc(h2)}</th></tr></thead><tbody>` +
+      filled.map(([lab,k])=>`<tr><td>${esc(lab)}</td><td>${br(val(k))}</td></tr>`).join("") +
+      `</tbody></table></div>`;
+  }
+  function scoreTable(prefix, comps){
+    const sv = scores(prefix);
+    if(!sv.some(v=>v>0)) return "";
+    return `<div class="p-item"><table><thead><tr><th style="width:12%">코드</th><th>항목</th><th style="width:16%">나의 점수</th></tr></thead><tbody>` +
+      comps.map(([c,l],i)=>`<tr><td>${c}</td><td>${esc(l)}</td><td>${sv[i] ? sv[i] + " / 5" : "-"}</td></tr>`).join("") +
+      `</tbody></table></div>` +
+      `<div class="p-radar">${radarSVG(prefix)}</div>`;
+  }
+  function checkedList(title, items){
+    const on = items.filter(([k])=>chk(k));
+    if(!on.length) return "";
+    return `<div class="p-item"><p class="p-q">${esc(title)}</p><p class="p-a">${on.map(([,lab])=>"✓ "+esc(lab)).join("\n")}</p></div>`;
+  }
+
+  /* ── 25차시 PDF ───────────────────────── */
+  function build25(){
+    let out = "";
+    let p1 = ["q1","q2"].map(qa).join("");
+    const g = val("q3sel"), gw = val("q3why");
+    if(g || gw){
+      p1 += `<div class="p-item"><p class="p-q">Q3. 가장 성장했다고 느끼는 역량 (A~G)</p>` +
+            `<p class="p-a">${esc(g || "(미선택)")}${gw ? "\n\n[그렇게 느낀 이유]\n" + esc(gw) : ""}</p></div>`;
+    }
+    p1 += ["q4","q5","q6","q7","q8"].map(qa).join("");
+    out += sec("PART 1. 12개의 과정, 잠시 멈추어 돌아봅니다", p1);
+
+    out += sec("활동지 ① 12개 과정 한 줄 회고", tbl2("과정","나의 한 줄 회고",[
+      ["① 본질 이해","o1"],["②③ 가치관·윤리","o2"],["④⑤ 데이터·설계","o3"],
+      ["⑥⑦ 도구·평가","o4"],["⑧⑨⑩ 집합 실행","o5"],["⑪⑫ 분석·환류","o6"]]));
+
+    out += sec("활동지 ② 역량별 자가점수 · 나의 별자리",
+      scoreTable("s",COMPS25) + qa("strength") + qa("weak") + qa("reflect"));
+
+    out += sec("활동지 ③ 수업 혁신의 이면 읽기", tbl2("역량 요소","교사의 구체적 행동",[
+      ["[C] 분석","b1"],["[D] 설계","b2"],["[E] 실행","b3"],["[F] 평가","b4"]]));
+
+    out += sec("회고 활동 ① 기억에 남는 순간", qa("m1") + qa("m2"));
+
+    const kk = val("kpt_k"), kp = val("kpt_p"), kt = val("kpt_t");
+    let a5 = "";
+    if(kk || kp || kt){
+      const cell = v => v ? br(v) : "-";
+      a5 = `<div class="p-item"><table><thead><tr><th style="width:33.3%">Keep · 잘된 것</th><th style="width:33.3%">Problem · 아쉬운 것</th><th>Try · 새로 시도할 것</th></tr></thead>
+            <tbody><tr><td>${cell(kk)}</td><td>${cell(kp)}</td><td>${cell(kt)}</td></tr></tbody></table></div>`;
+    }
+    out += sec("회고 활동 ② KPT 회고", a5);
+
+    const rows4 = [["마음가짐","ba1b","ba1a"],["수업 설계","ba2b","ba2a"],["동료 관계","ba3b","ba3a"]]
+      .filter(([,b,a])=>val(b) || val(a));
+    let a6 = "";
+    if(rows4.length){
+      a6 = `<div class="p-item"><table><thead><tr><th style="width:16%"></th><th>Before (이전)</th><th>After (이후)</th></tr></thead><tbody>` +
+        rows4.map(([lab,b,a])=>`<tr><td><b>${esc(lab)}</b></td><td>${br(val(b)) || "-"}</td><td>${br(val(a)) || "-"}</td></tr>`).join("") +
+        `</tbody></table></div>`;
+    }
+    out += sec("활동지 ④ 1차시의 나 vs 지금의 나", a6);
+
+    out += sec("동료와 함께 나누기", qa("peer1") + qa("peer2"));
+    out += sec("돌아봄을 '심층 진단'으로 이어 가기", qa("next"));
+    if(!out.trim()) return null;
+
+    const vow = val("vow");
+    const close =
+      `<div class="p-close"><h3>활동 1 마무리 · 1번~12번 과정 되돌아보기</h3>
+        <p>12개 과정은 흩어진 연수가 아니라 A~G 역량을 키워 온 <b>하나의 여정</b>이었습니다. 자가진단, 역량 역추적, KPT, Before &amp; After로 나의 변화를 '눈에 보이게' 정리했고, 여기서 모은 <b>강점·보완점·변화</b>가 곧 사후 진단 해석과 성장 로드맵의 재료가 됩니다.</p>
+        <p>연수는 끝이 아니라 <b>'현장 실천의 출발점'</b>입니다. 다음 활동에서 그 출발선을 그립니다.</p>` +
+      (vow ? `<p style="margin-top:10px"><b>나의 성장 다짐</b><br>“${esc(vow)}”</p>` : "") +
+      `<div class="flow">돌아봄(활동1) → 진단(활동2) → 설계(활동3) → 실천·연대(활동4)</div></div>`;
+    return out + close;
+  }
+
+  /* ── 26차시 PDF ───────────────────────── */
+  function build26(){
+    let out = "";
+    out += sec("들어가며 — 왜 사후 진단인가", qa("t2_q1") + qa("t2_q2"));
+    out += sec("사후 진단 진행 체크", checkedList("진행 체크", [
+      ["t2_c1","사후 역량 진단(21문항 또는 63문항) 완료"],
+      ["t2_c2","결과 대시보드·레이더 차트 화면 캡쳐"],
+      ["t2_c3","포트폴리오 '사후 역량 대시보드' 제출"]]));
+    out += sec("결과 해석 — 점수 너머의 의미 읽기", qa("t2_view") + qa("t2_stage") + qa("t2_axis"));
+    out += sec("활동지 · 역량 자가 프로파일링 (육각형)",
+      scoreTable("t2s",COMPS26) + qa("t2_strong") + qa("t2_weakpt"));
+
+    const preRows = ["A 이해","B 윤리","C 분석","D 설계","E 실행","F 평가"].map((lab,i)=>{
+      const c = "ABCDEF"[i];
+      return [lab, val("t2_pre_"+c), val("t2_post_"+c), val("t2_why_"+c)];
+    }).filter(r=>r[1]||r[2]||r[3]);
+    let cmp = "";
+    if(preRows.length){
+      cmp = `<div class="p-item"><table><thead><tr><th style="width:16%">역량</th><th style="width:12%">사전</th><th style="width:12%">사후</th><th>변화·해석 (왜?)</th></tr></thead><tbody>` +
+        preRows.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])||"-"}</td><td>${esc(r[2])||"-"}</td><td>${esc(r[3])||"-"}</td></tr>`).join("") +
+        `</tbody></table></div>`;
+    }
+    out += sec("활동지 · 사전 vs 사후 비교", cmp);
+    out += sec("활동지 · 세 가지 성찰 질문", qa("t2_r1") + qa("t2_r2") + qa("t2_r3"));
+    out += sec("활동지 · 성장 메이트 인터뷰", qa("t2_i1") + qa("t2_i2") + qa("t2_i3"));
+    out += sec("나의 진단, 한 문장으로", qa("t2_onesent") + qa("t2_follow"));
+    if(!out.trim()) return null;
+
+    const close =
+      `<div class="p-close"><h3>활동 2 마무리 · 진단에서 설계로</h3>
+        <p>사후 진단과 사전 비교, 세 가지 성찰 질문으로 <b>나의 역량 변화를 해석</b>했습니다. 숫자 너머의 이유를 읽어내며 <b>강점·보완 역량과 교육 가치관이 또렷해졌습니다.</b></p>
+        <p>이제 이 결과를 바탕으로, '무엇을 어떻게 키울지' 구체적 계획을 세웁니다. 다음 활동 — <b>맞춤형 전문성 개발 경로 설계 : 나만의 성장 로드맵</b>.</p>` +
+      (chk("t2_c4") ? `<p><b>✓ 포트폴리오 점검 완료</b> — 사후 대시보드 캡쳐 제출</p>` : "") +
+      `<div class="flow">돌아봄(활동1) → 진단(활동2) → 설계(활동3) → 실천·연대(활동4)</div></div>`;
+    return out + close;
+  }
+
+  /* ── 27차시 PDF ───────────────────────── */
+  function build27(){
+    let out = "";
+    out += sec("활동 3 · 왜 성장 로드맵인가", qa("t3_q1") + qa("t3_q2") + qa("t3_q3") + qa("t3_q4"));
+
+    const needs = ["t3_need1","t3_need2","t3_need3"].map(val).filter(Boolean);
+    const wants = ["t3_want1","t3_want2","t3_want3"].map(val).filter(Boolean);
+    let sw = "";
+    if(needs.length || wants.length){
+      sw = `<div class="p-item"><table><thead><tr><th style="width:50%">[A] 학생의 필요 (Need)</th><th>[B] 나의 흥미 (Want)</th></tr></thead>
+        <tbody><tr><td>${needs.map(esc).join("<br>") || "-"}</td><td>${wants.map(esc).join("<br>") || "-"}</td></tr></tbody></table></div>`;
+    }
+    out += sec("활동지 · 성장 스윗 스팟 찾기", sw + qa("t3_goal"));
+
+    out += sec("활동지 · 나의 연간 성장 로드맵", tbl2("시기","구체적 실행 계획 (Action Item)",[
+      ["단기 (1학기)","t3_road_s"],["중기 (2학기)","t3_road_m"],["장기 (1년 후)","t3_road_l"]]));
+
+    out += sec("선도교사 컨설팅", qa("t3_consult"));
+    out += sec("활동지 · 나만의 학습 플레이리스트", tbl2("구분","학습 자원",[
+      ["연수 플랫폼","t3_pl1"],["커뮤니티/채널","t3_pl2"],["AI 파트너 도구","t3_pl3"]]));
+
+    const obRows = [[val("t3_ob1"),val("t3_sol1")],[val("t3_ob2"),val("t3_sol2")]].filter(r=>r[0]||r[1]);
+    let ob = "";
+    if(obRows.length){
+      ob = `<div class="p-item"><table><thead><tr><th style="width:50%">예상 장애물</th><th>나의 극복 방안</th></tr></thead><tbody>` +
+        obRows.map(r=>`<tr><td>${esc(r[0])||"-"}</td><td>${esc(r[1])||"-"}</td></tr>`).join("") + `</tbody></table></div>`;
+    }
+    out += sec("활동지 · 성장 걸림돌 제거", ob);
+    out += sec("로드맵 공유 · 성장 메이트", qa("t3_fb") + qa("t3_mate"));
+
+    const d1 = val("t3_d1"), d2 = val("t3_d2");
+    let decl = "";
+    if(d1 || d2){
+      decl = `<div class="p-item"><p class="p-q">[교사 전문성 성장 선언문]</p>
+        <p class="p-a">나는 AI·디지털 대전환의 시기, 두려움보다 호기심으로, 고립보다 연대를 선택하겠습니다.\n나는 2026년, ( ${esc(d1||"    ")} ) 역량을 집중적으로 키워, 우리 학급·교과 학생들의 ( ${esc(d2||"    ")} )을/를 돕는 교사가 되겠습니다.</p></div>`;
+    }
+    out += sec("활동지 · 교사 전문성 성장 선언", decl);
+
+    out += sec("활동 4 · 함께 멀리 가기", qa("t3_q5"));
+    out += sec("활동지 · 마이크로 PLC (롤링 페이퍼)", qa("t3_worry") + tbl2("동료","한 줄 조언",[
+      ["동료 A","t3_adv1"],["동료 B","t3_adv2"],["동료 C","t3_adv3"]]));
+
+    const coRows = [["도입","t3_co_t1","t3_co_a1"],["전개","t3_co_t2","t3_co_a2"],["정리","t3_co_t3","t3_co_a3"]]
+      .filter(([,a,b])=>val(a)||val(b));
+    let co = "";
+    if(coRows.length){
+      co = `<div class="p-item"><table><thead><tr><th style="width:12%">단계</th><th style="width:40%">활용할 AI·디지털 도구</th><th>교사의 핵심 발문/활동</th></tr></thead><tbody>` +
+        coRows.map(([lab,a,b])=>`<tr><td>${lab}</td><td>${esc(val(a))||"-"}</td><td>${esc(val(b))||"-"}</td></tr>`).join("") + `</tbody></table></div>`;
+    }
+    out += sec("활동지 · 공동 수업 설계", co);
+    out += sec("활동지 · 5분 나눔 마켓", qa("t3_mk1") + qa("t3_mk2"));
+    out += sec("활동지 · 공유 채널 탐색", checkedList("선택한 공유 채널", [
+      ["t3_ch1","교내 메신저·동학년 (가장 가깝고 빠른 공유)"],
+      ["t3_ch2","온라인 교사 커뮤니티 (집단지성의 장)"],
+      ["t3_ch3","개인 SNS·블로그·유튜브 (퍼스널 브랜딩)"],
+      ["t3_ch4","교육청 수업 나눔 플랫폼 (공적 기여)"]]));
+    out += sec("활동지 · 데이터 리터러시 연습", qa("t3_fact") + qa("t3_action") + qa("t3_mydata"));
+
+    let nx = qa("t3_nextwhy");
+    const nsel = val("t3_next");
+    if(nsel) nx = `<div class="p-item"><p class="p-q">올해 도전할 후속 연수</p><p class="p-a">${esc(nsel)}</p></div>` + nx;
+    out += sec("후속 전문분야 연수 선택", nx);
+
+    const eRows = [["마음가짐","t3_e1b","t3_e1a"],["수업 설계","t3_e2b","t3_e2a"],["동료 관계","t3_e3b","t3_e3a"]]
+      .filter(([,b,a])=>val(b)||val(a));
+    let es = "";
+    if(eRows.length){
+      es = `<div class="p-item"><table><thead><tr><th style="width:16%"></th><th>연수 이전의 나 (Before)</th><th>연수 이후의 나 (After)</th></tr></thead><tbody>` +
+        eRows.map(([lab,b,a])=>`<tr><td><b>${esc(lab)}</b></td><td>${br(val(b))||"-"}</td><td>${br(val(a))||"-"}</td></tr>`).join("") + `</tbody></table></div>`;
+    }
+    out += sec("활동지 · 성찰 에세이 Before & After", es);
+
+    let vow2 = qa("t3_word");
+    const v1 = val("t3_v1"), v2 = val("t3_v2");
+    if(v1 || v2){
+      vow2 += `<div class="p-item"><p class="p-q">[성장 다짐 선언]</p>
+        <p class="p-a">나는 ( ${esc(v1||"    ")} ) 역량을 키워 ( ${esc(v2||"    ")} ) 수업을 만들겠습니다.</p></div>`;
+    }
+    out += sec("최종 계획안 공유 · 성장 다짐 선언", vow2);
+
+    const cm1 = val("t3_cm1"), cm2 = val("t3_cm2");
+    let cm = "";
+    if(cm1 || cm2){
+      cm = `<div class="p-item"><p class="p-q">[체인지 메이커(Change Maker) 선언문]</p>
+        <p class="p-a">이 연수는 끝이 아니라 새로운 시작입니다.\n나는 동료와 함께 ( ${esc(cm1||"    ")} ) 하는 교사로 계속 성장하겠습니다.` +
+        (cm2 ? `\n\n나의 다음 첫 발자국(Action Item) : ${esc(cm2)}` : "") + `</p></div>`;
+    }
+    out += sec("활동지 · 체인지 메이커 선언", cm);
+
+    out += sec("오늘의 배움 점검", checkedList("나는 할 수 있나요?", [
+      ["t3_ck1","사전·사후 진단을 비교해 나의 성장과 보완점을 설명할 수 있다"],
+      ["t3_ck2","우선순위 역량을 담은 6개월 실행 계획 로드맵을 작성했다"],
+      ["t3_ck3","교육적 활용 관점과 교사 주도성을 성찰하고 실천 다짐을 세웠다"],
+      ["t3_ck4","사후 대시보드 캡쳐와 역량 개발 계획서를 포트폴리오에 기록·제출했다"]]));
+    if(!out.trim()) return null;
+
+    const fin = val("t3_final");
+    const close =
+      `<div class="p-close"><h3>연수를 마치며 · 끝이 아니라, 현장 실천의 출발점</h3>
+        <p><b>돌아봄(활동1) → 진단(활동2) → 설계(활동3) → 실천·연대(활동4)</b>의 여정을 마칩니다. 오늘 그린 로드맵과 맺은 연대가, 내일의 수업을 바꿉니다.</p>
+        <p>남은 일정 — 만족도 조사(7월 19일~25일) → 수업 실천 후 '인공지능 활용 수업 실천 보고서' 작성. 수고하셨습니다. 우리는 이제 서로의 성장 메이트입니다.</p>` +
+      (fin ? `<p style="margin-top:10px"><b>나에게 남기는 한 문장</b><br>“${esc(fin)}”</p>` : "") +
+      `<div class="flow">본 차시는 연수의 끝이 아닌, 현장으로 잇는 '출발선'입니다</div></div>`;
+    return out + close;
+  }
+
+  /* ── PDF 버튼 ─────────────────────────── */
+  const BUILDERS = {"25":build25, "26":build26, "27":build27};
+
+  document.getElementById("btn-pdf").addEventListener("click", ()=>{
+    const school = val("school"), name = val("name");
+    if(!school || !name){
+      toast("학교명과 이름을 먼저 입력해 주세요.");
+      (school ? document.getElementById("name") : document.getElementById("school")).focus();
+      return;
+    }
+    const body = BUILDERS[cur]();
+    if(!body){ toast(`${cur}차시에 작성한 내용이 없습니다. 한 항목이라도 적어 주세요.`); return; }
+
+    const info = LESSON_TITLE[cur];
+    const today = new Date().toLocaleDateString("ko-KR", {year:"numeric", month:"long", day:"numeric"});
+    const head =
+      `<div class="p-head">
+         <p class="p-brand">2026년 인공지능 활용 선도교사 연수 · 집합⑬ AI·디지털 역량 진단 및 전문성 개발 경로 설계</p>
+         <h1>${cur}차시 · ${esc(info.act)} — ${esc(info.name)}</h1>
+         <div class="p-meta">
+           <span><b>학교명</b> ${esc(school)}</span>
+           <span><b>이름</b> ${esc(name)}</span>
+           <span><b>작성일</b> ${esc(today)}</span>
+         </div>
+       </div>`;
+    const foot = `<div class="p-foot">2026년 인공지능 활용 선도교사 연수 · 집합⑬ AI·디지털 역량 진단 및 전문성 개발 경로 설계<br>${esc(CREDIT)}</div>`;
+
+    document.getElementById("print-root").innerHTML = head + body + foot;
+    const prev = document.title;
+    document.title = `집합13_${cur}차시_${info.file}_${school}_${name}`;
+    window.print();
+    setTimeout(()=>{ document.title = prev; }, 800);
+  });
+
+  /* ── 초기화 버튼 ──────────────────────── */
+  document.getElementById("btn-reset").addEventListener("click", ()=>{
+    if(!confirm("모든 차시의 작성 내용을 지웁니다. 계속할까요?")) return;
+    fields().forEach(el=>{
+      if(el.type === "checkbox" || el.type === "radio") el.checked = false;
+      else el.value = "";
+    });
+    try{ localStorage.removeItem(KEY); }catch(e){}
+    drawRadars();
+    setStatus("작성 내용은 이 브라우저에 자동 저장됩니다.");
+    toast("모두 지웠습니다.");
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+
+  /* ── 초기화 ───────────────────────────── */
+  load();
+  drawRadars();
+  let savedTab = "25";
+  try{ savedTab = localStorage.getItem("keris13_tab") || "25"; }catch(e){}
+  showLesson(savedTab);
+})();
+</script>
+</body>
+</html>
