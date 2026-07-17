@@ -320,9 +320,10 @@
 
 <nav class="tabs">
   <div class="tabs-in">
-    <button class="tab on" data-t="25">25차시<small>활동1 · 연수 돌아보기</small></button>
-    <button class="tab" data-t="26">26차시<small>활동2 · 역량 심층 진단</small></button>
-    <button class="tab" data-t="27">27차시<small>활동3·4 · 경로 설계와 마무리</small></button>
+    <button class="tab on" data-t="a1">활동 1<small>25차시 · 연수 돌아보기</small></button>
+    <button class="tab" data-t="a2">활동 2<small>26차시 · 역량 심층 진단</small></button>
+    <button class="tab" data-t="a3">활동 3<small>27차시 · 경로 설계</small></button>
+    <button class="tab" data-t="a4">활동 4<small>27차시 · 후속 연계·마무리</small></button>
   </div>
 </nav>
 
@@ -345,7 +346,7 @@
   </div>
 
 <!-- ════════════════════════════ 25차시 ════════════════════════════ -->
-<section class="lesson on" data-lesson="25">
+<section class="lesson on" data-lesson="a1">
 
   <div class="section-head">
     <div class="num">1</div>
@@ -657,7 +658,7 @@
 </section>
 
 <!-- ════════════════════════════ 26차시 ════════════════════════════ -->
-<section class="lesson" data-lesson="26">
+<section class="lesson" data-lesson="a2">
 
   <div class="section-head">
     <div class="num">1</div>
@@ -882,7 +883,7 @@
 </section>
 
 <!-- ════════════════════════════ 27차시 ════════════════════════════ -->
-<section class="lesson" data-lesson="27">
+<section class="lesson" data-lesson="a3">
 
   <div class="section-head">
     <div class="num">3</div>
@@ -1058,6 +1059,23 @@
       </div>
     </div>
   </div>
+
+  <div class="card closing">
+    <span class="src">p.75 · 활동 3 정리</span>
+    <h2>설계에서 실천·연대로</h2>
+    <p>진단 결과로 <b>우선순위 역량</b>을 정하고, <b>6개월 실행 계획이 담긴 성장 로드맵</b>을 완성했습니다. 학습 자원과 걸림돌 대비, 성장 메이트까지 — 성장의 채비를 모두 갖췄습니다.</p>
+    <p>이제 '혼자'가 아니라 <b>'함께' 지속할 차례</b>입니다. 다음 활동(활동 4)에서 학습공동체와 후속 지원으로 그 연대를 이어 갑니다.</p>
+    <div class="flow">돌아봄(활동1) → 진단(활동2) → 설계(활동3) → 실천·연대(활동4)</div>
+    <label class="fld" style="margin-bottom:8px">포트폴리오 점검!</label>
+    <div class="checks">
+      <label class="chk"><input type="checkbox" data-k="t3_p1"><span>역량 개발 계획서(목표 · 사전/사후 결과 · 단기/중기/장기 계획)가 모두 채워졌는지 확인했다</span></label>
+    </div>
+  </div>
+
+</section>
+
+<!-- ════════════════════════════ 활동 4 (27차시) ════════════════════════════ -->
+<section class="lesson" data-lesson="a4">
 
   <div class="section-head">
     <div class="num green">4</div>
@@ -1285,7 +1303,7 @@
 <div class="bar">
   <span class="status" id="status">작성 내용은 이 브라우저에 자동 저장됩니다.</span>
   <button class="btn-ghost" id="btn-reset">전체 지우기</button>
-  <button class="btn-primary" id="btn-pdf">📄 25차시 PDF 저장</button>
+  <button class="btn-primary" id="btn-pdf">📄 활동 1 PDF 저장</button>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -1383,18 +1401,20 @@
     document.getElementById("radar26").innerHTML = radarSVG("t2s");
   }
 
-  /* ── 차시 탭 ─────────────────────────── */
-  let cur = "25";
+  /* ── 활동 탭 ─────────────────────────── */
+  let cur = "a1";
   const LESSON_TITLE = {
-    "25":{act:"활동 1", name:"1번~12번 연수 돌아보기", file:"돌아보기"},
-    "26":{act:"활동 2", name:"AI·디지털 역량 심층 진단", file:"심층진단"},
-    "27":{act:"활동 3·4", name:"전문성 개발 경로 설계·연수 마무리", file:"경로설계"}
+    "a1":{chasi:"25차시", act:"활동 1", name:"1번~12번 연수 돌아보기", file:"활동1_돌아보기"},
+    "a2":{chasi:"26차시", act:"활동 2", name:"AI·디지털 역량 심층 진단", file:"활동2_심층진단"},
+    "a3":{chasi:"27차시", act:"활동 3", name:"맞춤형 전문성 개발 경로 설계", file:"활동3_경로설계"},
+    "a4":{chasi:"27차시", act:"활동 4", name:"후속 연수·지원 연계 및 연수 마무리", file:"활동4_마무리"}
   };
   function showLesson(n){
+    if(!LESSON_TITLE[n]) n = "a1";
     cur = n;
     document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on", b.dataset.t===n));
     document.querySelectorAll(".lesson").forEach(s=>s.classList.toggle("on", s.dataset.lesson===n));
-    document.getElementById("btn-pdf").textContent = `📄 ${n}차시 PDF 저장`;
+    document.getElementById("btn-pdf").textContent = `📄 ${LESSON_TITLE[n].act} PDF 저장`;
     try{ localStorage.setItem("keris13_tab", n); }catch(e){}
     window.scrollTo({top:0, behavior:"instant"});
   }
@@ -1573,10 +1593,10 @@
     return out + close;
   }
 
-  /* ── 27차시 PDF ───────────────────────── */
-  function build27(){
+  /* ── 활동 3 PDF (27차시) ─────────────── */
+  function build3(){
     let out = "";
-    out += sec("활동 3 · 왜 성장 로드맵인가", qa("t3_q1") + qa("t3_q2") + qa("t3_q3") + qa("t3_q4"));
+    out += sec("왜 성장 로드맵인가", qa("t3_q1") + qa("t3_q2") + qa("t3_q3") + qa("t3_q4"));
 
     const needs = ["t3_need1","t3_need2","t3_need3"].map(val).filter(Boolean);
     const wants = ["t3_want1","t3_want2","t3_want3"].map(val).filter(Boolean);
@@ -1610,8 +1630,21 @@
         <p class="p-a">나는 AI·디지털 대전환의 시기, 두려움보다 호기심으로, 고립보다 연대를 선택하겠습니다.\n나는 2026년, ( ${esc(d1||"    ")} ) 역량을 집중적으로 키워, 우리 학급·교과 학생들의 ( ${esc(d2||"    ")} )을/를 돕는 교사가 되겠습니다.</p></div>`;
     }
     out += sec("활동지 · 교사 전문성 성장 선언", decl);
+    if(!out.trim()) return null;
 
-    out += sec("활동 4 · 함께 멀리 가기", qa("t3_q5"));
+    const close3 =
+      `<div class="p-close"><h3>활동 3 마무리 · 설계에서 실천·연대로</h3>
+        <p>진단 결과로 <b>우선순위 역량</b>을 정하고, <b>6개월 실행 계획이 담긴 성장 로드맵</b>을 완성했습니다. 학습 자원과 걸림돌 대비, 성장 메이트까지 — 성장의 채비를 모두 갖췄습니다.</p>
+        <p>이제 '혼자'가 아니라 <b>'함께' 지속할 차례</b>입니다. 다음 활동 — 후속 연수·지원 연계 및 연수 마무리(성장 다짐 선언).</p>` +
+      (chk("t3_p1") ? `<p><b>✓ 포트폴리오 점검 완료</b> — 역량 개발 계획서(목표·사전/사후 결과·단기/중기/장기 계획) 확인</p>` : "") +
+      `<div class="flow">돌아봄(활동1) → 진단(활동2) → 설계(활동3) → 실천·연대(활동4)</div></div>`;
+    return out + close3;
+  }
+
+  /* ── 활동 4 PDF (27차시) ─────────────── */
+  function build4(){
+    let out = "";
+    out += sec("함께 멀리 가기", qa("t3_q5"));
     out += sec("활동지 · 마이크로 PLC (롤링 페이퍼)", qa("t3_worry") + tbl2("동료","한 줄 조언",[
       ["동료 A","t3_adv1"],["동료 B","t3_adv2"],["동료 C","t3_adv3"]]));
 
@@ -1680,7 +1713,7 @@
   }
 
   /* ── PDF 버튼 ─────────────────────────── */
-  const BUILDERS = {"25":build25, "26":build26, "27":build27};
+  const BUILDERS = {"a1":build25, "a2":build26, "a3":build3, "a4":build4};
 
   document.getElementById("btn-pdf").addEventListener("click", ()=>{
     const school = val("school"), name = val("name");
@@ -1697,7 +1730,7 @@
     const head =
       `<div class="p-head">
          <p class="p-brand">2026년 인공지능 활용 선도교사 연수 · 집합⑬ AI·디지털 역량 진단 및 전문성 개발 경로 설계</p>
-         <h1>${cur}차시 · ${esc(info.act)} — ${esc(info.name)}</h1>
+         <h1>${esc(info.chasi)} · ${esc(info.act)} — ${esc(info.name)}</h1>
          <div class="p-meta">
            <span><b>학교명</b> ${esc(school)}</span>
            <span><b>이름</b> ${esc(name)}</span>
@@ -1708,7 +1741,7 @@
 
     document.getElementById("print-root").innerHTML = head + body + foot;
     const prev = document.title;
-    document.title = `집합13_${cur}차시_${info.file}_${school}_${name}`;
+    document.title = `집합13_${info.chasi}_${info.file}_${school}_${name}`;
     window.print();
     setTimeout(()=>{ document.title = prev; }, 800);
   });
@@ -1730,8 +1763,9 @@
   /* ── 초기화 ───────────────────────────── */
   load();
   drawRadars();
-  let savedTab = "25";
-  try{ savedTab = localStorage.getItem("keris13_tab") || "25"; }catch(e){}
+  let savedTab = "a1";
+  try{ savedTab = localStorage.getItem("keris13_tab") || "a1"; }catch(e){}
+  savedTab = ({"25":"a1","26":"a2","27":"a3"})[savedTab] || savedTab;
   showLesson(savedTab);
 })();
 </script>
