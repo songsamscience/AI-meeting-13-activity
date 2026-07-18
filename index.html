@@ -670,6 +670,16 @@
       <li>② 동료의 이야기에서 공감되는 점·배울 점을 한 가지씩 말해 주기.</li>
       <li>③ 서로의 'Try(시도할 것)'에 응원 한마디.</li>
     </ul></div>
+    <div class="radar-box" style="margin-bottom:16px">
+      <div class="radar-wrap" id="radar-share"></div>
+      <div class="radar-note">
+        <p style="margin:0 0 10px"><b>나의 별자리</b> — 위 활동지 ②에서 표시한 점수가 그대로 나타납니다. 이 모양을 동료에게 보여 주며 여정을 소개해 보세요.</p>
+        <ul style="margin:0; padding-left:18px">
+          <li>강점 역량 (동료를 도울 나의 무기): <b id="share-strength">아직 입력 전</b></li>
+          <li>보완 역량 (다음 성장의 기회): <b id="share-weak">아직 입력 전</b></li>
+        </ul>
+      </div>
+    </div>
     <div style="margin-bottom:14px">
       <label class="fld" for="peer1">동료의 이야기에서 공감된 점 · 배울 점</label>
       <textarea id="peer1" data-k="peer1" data-q="동료의 이야기에서 공감된 점·배울 점" placeholder="동료에게서 얻은 것을 적어 보세요."></textarea>
@@ -1577,8 +1587,16 @@
     return `<svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">${g}</svg>`;
   }
   function drawRadars(){
-    document.getElementById("radar25").innerHTML = radarSVG("s");
+    const svg = radarSVG("s");
+    document.getElementById("radar25").innerHTML = svg;
+    document.getElementById("radar-share").innerHTML = svg;
     document.getElementById("radar26").innerHTML = radarSVG("t2s");
+    const mirror = (srcId, dstId) => {
+      const v = (document.getElementById(srcId)?.value || "").trim();
+      document.getElementById(dstId).textContent = v || "아직 입력 전";
+    };
+    mirror("strength", "share-strength");
+    mirror("weak", "share-weak");
   }
 
   /* ── 활동 탭 ─────────────────────────── */
