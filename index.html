@@ -278,12 +278,42 @@
   }
   .toast.on{opacity:1; transform:translateX(-50%) translateY(0)}
 
+  /* ── AI에게 물어보기 ─────────────────── */
+  .ai-ask{
+    display:inline-flex; align-items:center; gap:5px; margin-top:7px;
+    font-size:12.5px; font-weight:700; color:var(--brand);
+    background:var(--brand-soft); border:1.5px solid #dbe5ff; border-radius:999px;
+    padding:4px 12px; cursor:pointer; transition:.13s;
+  }
+  .ai-ask:hover{background:#dfe8ff; border-color:var(--brand); transform:translateY(-1px)}
+  .closing .ai-ask{background:rgba(255,255,255,.2); border-color:rgba(255,255,255,.4); color:#fff}
+  .closing .ai-ask:hover{background:rgba(255,255,255,.32)}
+  .ai-modal-bg{position:fixed; inset:0; background:rgba(22,33,56,.45); z-index:70;
+    display:none; align-items:center; justify-content:center; padding:20px;
+    backdrop-filter:blur(3px)}
+  .ai-modal-bg.on{display:flex}
+  .ai-modal{background:#fff; border-radius:18px; max-width:640px; width:100%;
+    max-height:86vh; overflow:auto; padding:24px 24px 20px;
+    box-shadow:0 24px 60px -12px rgba(0,0,0,.35)}
+  .ai-modal h3{margin:0 0 4px; font-size:18px; font-weight:800}
+  .ai-modal textarea{min-height:180px; font-size:13.5px; line-height:1.6; background:#f8fafd}
+  .ai-modal .ai-btns{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px}
+  .ai-modal .ai-btns button{
+    font-size:13.5px; font-weight:750; border-radius:10px; padding:9px 15px;
+    border:1.5px solid var(--line); background:#fff; color:var(--ink);
+  }
+  .ai-modal .ai-btns button.go{background:linear-gradient(135deg,var(--brand),#2a49bb);
+    color:#fff; border-color:transparent}
+  .ai-modal .ai-btns button:hover{transform:translateY(-1px); border-color:#c3cbdc}
+  .ai-modal .ai-btns button.go:hover{border-color:transparent}
+  .ai-modal .ai-note{font-size:12px; color:#9aa3b8; margin-top:10px; line-height:1.6}
+
   /* ── 인쇄(PDF) ──────────────────────── */
   #print-root{display:none}
   @media print{
     @page{size:A4; margin:14mm 13mm}
     body{background:#fff; -webkit-print-color-adjust:exact; print-color-adjust:exact}
-    .wrap, header.hero, .tabs, .bar, .toast{display:none !important}
+    .wrap, header.hero, .tabs, .bar, .toast, .ai-modal-bg{display:none !important}
     #print-root{display:block !important}
     .p-head{border-bottom:3px solid #3457d5; padding-bottom:12px; margin-bottom:18px}
     .p-head .p-brand{font-size:9.5pt; color:#3457d5; font-weight:800; letter-spacing:.06em; margin:0 0 4px}
@@ -1423,6 +1453,24 @@
 <!-- 인쇄 전용 영역 -->
 <div id="print-root"></div>
 
+<!-- AI에게 물어보기 모달 -->
+<div class="ai-modal-bg" id="ai-modal-bg">
+  <div class="ai-modal">
+    <h3>🤖 AI에게 물어보기</h3>
+    <p class="lead">아래 프롬프트를 확인·수정한 뒤 AI 서비스를 열어 주세요. 열기 버튼을 누르면 프롬프트가 자동 복사되므로, 붙여넣기(Ctrl+V)만 하면 됩니다.</p>
+    <textarea id="ai-prompt" spellcheck="false"></textarea>
+    <div class="ai-btns">
+      <button type="button" class="go" id="ai-open-gpt">ChatGPT 열기 (질문 자동 입력)</button>
+      <button type="button" id="ai-open-claude">Claude 열기 (질문 자동 입력)</button>
+      <button type="button" id="ai-open-gem">Gemini 열기</button>
+      <button type="button" id="ai-open-sen">SenGPT 열기</button>
+      <button type="button" id="ai-copy">📋 복사만</button>
+      <button type="button" id="ai-close" style="margin-left:auto">닫기</button>
+    </div>
+    <p class="ai-note">※ AI의 답변은 참고용 힌트입니다. 나의 경험과 언어로 다듬어 작성하세요. 학생 이름 등 개인정보는 프롬프트에 넣지 마세요.</p>
+  </div>
+</div>
+
 <script>
 (function(){
   "use strict";
@@ -1566,6 +1614,11 @@
     drawRadars();
   });
   document.addEventListener("change", ()=>{ save(); drawRadars(); });
+
+  // 창을 닫거나 화면을 벗어나는 순간에도 즉시 저장 (자동 저장 지연 보완)
+  window.addEventListener("beforeunload", save);
+  window.addEventListener("pagehide", save);
+  document.addEventListener("visibilitychange", ()=>{ if(document.visibilityState === "hidden") save(); });
 
   function setStatus(msg){ document.getElementById("status").textContent = msg; }
   function toast(msg){
@@ -1867,7 +1920,7 @@
       return;
     }
     const body = BUILDERS[cur]();
-    if(!body){ toast(`${cur}차시에 작성한 내용이 없습니다. 한 항목이라도 적어 주세요.`); return; }
+    if(!body){ toast(`${LESSON_TITLE[cur].act}에 작성한 내용이 없습니다. 한 항목이라도 적어 주세요.`); return; }
 
     const info = LESSON_TITLE[cur];
     const today = new Date().toLocaleDateString("ko-KR", {year:"numeric", month:"long", day:"numeric"});
@@ -1889,6 +1942,53 @@
     window.print();
     setTimeout(()=>{ document.title = prev; }, 800);
   });
+
+  /* ── AI에게 물어보기 ──────────────────── */
+  const AI_CTX =
+    "당신은 '2026년 인공지능 활용 선도교사 연수(집합13 · AI·디지털 역량 진단 및 전문성 개발 경로 설계)'에 참여 중인 교사를 돕는 친절한 조언자입니다.\n" +
+    "연수 역량체계 : A 교육 이해 · B 윤리적 실천 · C 수업·학습자 분석 · D 교수·학습 및 평가 설계 · E 실행 · F 평가 실행 · G AI·디지털 기반 교사 전문성 개발.";
+
+  function buildPrompt(el){
+    const card  = el.closest(".card");
+    const topic = (card?.querySelector("h3")?.textContent || "").trim();
+    const draft = (el.value || "").trim();
+    return AI_CTX +
+      (topic ? `\n\n[활동 주제] ${topic}` : "") +
+      `\n[질문] ${el.dataset.q}` +
+      `\n[내가 쓴 초안] ${draft || "(아직 작성하지 않음)"}` +
+      `\n\n[요청] 위 질문에 대해 학교 현장 교사의 관점에서, 답을 어떻게 쓰면 좋을지 힌트와 짧은 예시 답안을 5문장 이내로 간단히 알려 주세요. 초안이 있다면 더 구체적으로 다듬는 제안을 해 주세요.`;
+  }
+
+  const aiBg = document.getElementById("ai-modal-bg");
+  const aiTa = document.getElementById("ai-prompt");
+
+  document.querySelectorAll("textarea[data-q]").forEach(el=>{
+    const btn = document.createElement("button");
+    btn.type = "button"; btn.className = "ai-ask"; btn.textContent = "🤖 AI에게 물어보기";
+    btn.addEventListener("click", ()=>{ aiTa.value = buildPrompt(el); aiBg.classList.add("on"); });
+    el.insertAdjacentElement("afterend", btn);
+  });
+
+  function aiCopy(){
+    const done = ()=>toast("프롬프트가 복사되었습니다. AI 서비스에 붙여넣으세요.");
+    const fallback = ()=>{ aiTa.select(); document.execCommand("copy"); done(); };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(aiTa.value).then(done).catch(fallback);
+    } else { fallback(); }
+  }
+  function aiOpen(url){ aiCopy(); window.open(url, "_blank", "noopener"); }
+  document.getElementById("ai-copy").addEventListener("click", aiCopy);
+  document.getElementById("ai-open-gpt").addEventListener("click",
+    ()=>aiOpen("https://chatgpt.com/?q=" + encodeURIComponent(aiTa.value)));
+  document.getElementById("ai-open-gem").addEventListener("click",
+    ()=>aiOpen("https://gemini.google.com/app"));
+  document.getElementById("ai-open-claude").addEventListener("click",
+    ()=>aiOpen("https://claude.ai/new?q=" + encodeURIComponent(aiTa.value)));
+  document.getElementById("ai-open-sen").addEventListener("click",
+    ()=>aiOpen("https://gov.wrks.ai/ko/agent"));
+  document.getElementById("ai-close").addEventListener("click", ()=>aiBg.classList.remove("on"));
+  aiBg.addEventListener("click", e=>{ if(e.target === aiBg) aiBg.classList.remove("on"); });
+  document.addEventListener("keydown", e=>{ if(e.key === "Escape") aiBg.classList.remove("on"); });
 
   /* ── 초기화 버튼 ──────────────────────── */
   document.getElementById("btn-reset").addEventListener("click", ()=>{
