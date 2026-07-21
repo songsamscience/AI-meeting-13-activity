@@ -308,6 +308,28 @@
   .ai-modal .ai-btns button:hover{transform:translateY(-1px); border-color:#c3cbdc}
   .ai-modal .ai-btns button.go:hover{border-color:transparent}
   .ai-modal .ai-note{font-size:12px; color:#9aa3b8; margin-top:10px; line-height:1.6}
+  /* 편집 위치 안내(① 자동완성 / ② 편집) */
+  .ai-modal .ai-field{margin-top:14px}
+  .ai-modal .ai-tag{display:inline-block; font-size:12px; font-weight:800;
+    padding:3px 11px; border-radius:999px; margin-bottom:7px}
+  .ai-modal .ai-tag.fixed{color:var(--ink-soft); background:#eef1f6; border:1px solid var(--line)}
+  .ai-modal .ai-tag.edit{color:#fff; background:linear-gradient(135deg,var(--brand),#2a49bb)}
+  .ai-modal #ai-fixed{min-height:0; height:auto; font-size:13px; color:var(--ink-soft);
+    background:#f1f3f8; border-color:var(--line); cursor:default; resize:none}
+  .ai-modal .ai-field.edit{background:var(--brand-soft); border:2px dashed #9db3ff;
+    border-radius:14px; padding:12px 13px 10px; box-shadow:0 0 0 4px rgba(52,87,213,.06)}
+  .ai-modal #ai-draft{min-height:120px; background:#fff; border-color:#c9d6ff}
+  .ai-modal .ai-hint{font-size:12px; color:var(--ink-soft); margin:8px 2px 0; line-height:1.55}
+  .ai-modal .ai-preview{margin-top:14px; border:1px solid var(--line); border-radius:12px;
+    background:#fafbfe; padding:0 12px}
+  .ai-modal .ai-preview summary{cursor:pointer; font-size:12.5px; font-weight:700;
+    color:var(--ink-soft); padding:10px 2px; list-style:none}
+  .ai-modal .ai-preview summary::-webkit-details-marker{display:none}
+  .ai-modal .ai-preview summary::before{content:"▸ "; color:var(--brand)}
+  .ai-modal .ai-preview[open] summary::before{content:"▾ "}
+  .ai-modal .ai-preview[open] summary{border-bottom:1px solid var(--line)}
+  .ai-modal #ai-prompt{min-height:150px; margin:8px 0 12px; font-size:12.5px;
+    color:var(--ink-soft); background:#fff}
 
   /* ── 후속 연수 소개 이미지 ───────────── */
   .follow-img{width:100%; border-radius:12px; border:1px solid var(--line);
@@ -1496,8 +1518,24 @@
 <div class="ai-modal-bg" id="ai-modal-bg">
   <div class="ai-modal">
     <h3>🤖 AI에게 물어보기</h3>
-    <p class="lead">아래 프롬프트를 확인·수정한 뒤 AI 서비스를 열어 주세요. 열기 버튼을 누르면 프롬프트가 자동 복사되므로, 붙여넣기(Ctrl+V)만 하면 됩니다.</p>
-    <textarea id="ai-prompt" spellcheck="false"></textarea>
+    <p class="lead">아래 <b>②번 칸</b>만 내 생각으로 고쳐 쓰면 됩니다. ①번은 자동으로 채워졌으니 그대로 두세요. 열기 버튼을 누르면 전체 내용이 자동 복사되므로, AI 화면에 붙여넣기(Ctrl+V)만 하면 됩니다.</p>
+
+    <div class="ai-field">
+      <span class="ai-tag fixed">① 자동 완성 · 그대로 두세요</span>
+      <textarea id="ai-fixed" readonly tabindex="-1"></textarea>
+    </div>
+
+    <div class="ai-field edit">
+      <span class="ai-tag edit">② ✏️ 여기를 내 생각으로 고쳐 쓰세요</span>
+      <textarea id="ai-draft" spellcheck="false"></textarea>
+      <p class="ai-hint">💡 비워 두면 AI가 <b>예시 답안</b>부터 제안해 주고, 내용을 적으면 그 초안을 더 다듬어 줍니다.</p>
+    </div>
+
+    <details class="ai-preview">
+      <summary>AI에게 실제로 보낼 전체 문장 미리보기</summary>
+      <textarea id="ai-prompt" readonly spellcheck="false"></textarea>
+    </details>
+
     <div class="ai-btns">
       <button type="button" class="go" id="ai-open-gpt">ChatGPT 열기 (질문 자동 입력)</button>
       <button type="button" id="ai-open-claude">Claude 열기 (질문 자동 입력)</button>
@@ -1998,24 +2036,46 @@
     "당신은 '2026년 인공지능 활용 선도교사 연수(집합13 · AI·디지털 역량 진단 및 전문성 개발 경로 설계)'에 참여 중인 교사를 돕는 친절한 조언자입니다.\n" +
     "연수 역량체계 : A 교육 이해 · B 윤리적 실천 · C 수업·학습자 분석 · D 교수·학습 및 평가 설계 · E 실행 · F 평가 실행 · G AI·디지털 기반 교사 전문성 개발.";
 
-  function buildPrompt(el){
-    const card  = el.closest(".card");
-    const topic = (card?.querySelector("h3")?.textContent || "").trim();
-    const draft = (el.value || "").trim();
-    return AI_CTX +
-      (topic ? `\n\n[활동 주제] ${topic}` : "") +
-      `\n[질문] ${el.dataset.q}` +
-      `\n[내가 쓴 초안] ${draft || "(아직 작성하지 않음)"}` +
-      `\n\n[요청] 위 질문에 대해 학교 현장 교사의 관점에서, 답을 어떻게 쓰면 좋을지 힌트와 짧은 예시 답안을 5문장 이내로 간단히 알려 주세요. 초안이 있다면 더 구체적으로 다듬는 제안을 해 주세요.`;
-  }
+  const AI_REQ =
+    "\n\n[요청] 위 질문에 대해 학교 현장 교사의 관점에서, 답을 어떻게 쓰면 좋을지 힌트와 짧은 예시 답안을 5문장 이내로 간단히 알려 주세요. 초안이 있다면 더 구체적으로 다듬는 제안을 해 주세요.";
 
-  const aiBg = document.getElementById("ai-modal-bg");
-  const aiTa = document.getElementById("ai-prompt");
+  const aiBg    = document.getElementById("ai-modal-bg");
+  const aiTa    = document.getElementById("ai-prompt");  // 전체 문장(미리보기·복사·열기용)
+  const aiFixed = document.getElementById("ai-fixed");   // ① 자동 완성(읽기 전용)
+  const aiDraft = document.getElementById("ai-draft");   // ② 내가 고쳐 쓰는 부분
+  let curTopic = "", curQ = "";
+
+  function assemblePrompt(){
+    const draft = (aiDraft.value || "").trim();
+    return AI_CTX +
+      (curTopic ? `\n\n[활동 주제] ${curTopic}` : "") +
+      `\n[질문] ${curQ}` +
+      `\n[내가 쓴 초안] ${draft || "(아직 작성하지 않음)"}` +
+      AI_REQ;
+  }
+  function syncPreview(){ aiTa.value = assemblePrompt(); }
+
+  function openAi(el){
+    const card = el.closest(".card");
+    curTopic = (card?.querySelector("h3")?.textContent || "").trim();
+    curQ     = el.dataset.q || "";
+    aiFixed.value = (curTopic ? `[활동 주제] ${curTopic}\n` : "") + `[질문] ${curQ}`;
+    aiDraft.value = (el.value || "").trim();
+    aiDraft.placeholder = el.placeholder || "여기에 나의 생각을 자유롭게 적어 보세요.";
+    syncPreview();
+    aiBg.classList.add("on");
+    setTimeout(()=>{
+      aiFixed.style.height = "auto";
+      aiFixed.style.height = Math.min(aiFixed.scrollHeight + 4, 180) + "px";
+      aiDraft.focus(); aiDraft.select();
+    }, 40);
+  }
+  aiDraft.addEventListener("input", syncPreview);
 
   document.querySelectorAll("textarea[data-q]").forEach(el=>{
     const btn = document.createElement("button");
     btn.type = "button"; btn.className = "ai-ask"; btn.textContent = "🤖 AI에게 물어보기";
-    btn.addEventListener("click", ()=>{ aiTa.value = buildPrompt(el); aiBg.classList.add("on"); });
+    btn.addEventListener("click", ()=>openAi(el));
     el.insertAdjacentElement("afterend", btn);
   });
 
