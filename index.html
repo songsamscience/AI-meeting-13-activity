@@ -372,6 +372,43 @@
     .p-foot{margin-top:18px; padding-top:9px; border-top:1px solid #ddd;
             font-size:9pt; color:#888; text-align:center; line-height:1.7}
   }
+
+  /* ── 카드(퀴즈) 숨기기 / 숨김 취소 ─────── */
+  .lesson .card{position:relative}
+  .lesson .card > h3, .lesson .card > h2{padding-right:74px}
+  .card-hide{
+    position:absolute; top:14px; right:14px; z-index:3;
+    display:inline-flex; align-items:center; gap:4px;
+    font-size:12px; font-weight:700; line-height:1; color:var(--ink-soft);
+    background:#f4f6fb; border:1px solid var(--line); border-radius:999px;
+    padding:5px 11px 5px 9px; cursor:pointer; transition:.13s;
+  }
+  .card-hide::before{content:"🙈"}
+  .card-hide:hover{background:#fdecec; border-color:#f2b8b8; color:#c0392b; transform:translateY(-1px)}
+  .closing .card-hide{background:rgba(255,255,255,.2); border-color:rgba(255,255,255,.45); color:#fff}
+  .closing .card-hide:hover{background:rgba(255,255,255,.34); color:#fff}
+  .card-hidden-bar{display:none}
+  .card.is-hidden{
+    padding:0 !important; border:1.5px dashed #ccd4e6 !important; box-shadow:none !important;
+    color:var(--ink-soft) !important;
+    background:repeating-linear-gradient(45deg,#f6f8fc,#f6f8fc 11px,#eef1f8 11px,#eef1f8 22px) !important;
+  }
+  .card.is-hidden::before{display:none !important}
+  .card.is-hidden:hover{box-shadow:none !important}
+  .card.is-hidden > *:not(.card-hidden-bar){display:none !important}
+  .card.is-hidden .card-hidden-bar{
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding:13px 16px;
+  }
+  .card-hidden-bar .ttl{margin-right:auto; font-size:13.5px; font-weight:650; color:var(--ink-soft)}
+  .card-hidden-bar .ttl b{color:var(--ink)}
+  .card-restore{
+    font-size:12.5px; font-weight:750; color:var(--brand);
+    background:var(--brand-soft); border:1.5px solid #dbe5ff; border-radius:999px;
+    padding:6px 15px; cursor:pointer; transition:.13s;
+  }
+  .card-restore:hover{background:#dfe8ff; border-color:var(--brand)}
+  #btn-unhide{color:#c0392b; border-color:#f0c4c4}
+  #btn-unhide:hover{border-color:#e08a8a; color:#a5281b; background:#fdf4f4}
 </style>
 </head>
 <body>
@@ -1505,6 +1542,7 @@
 <!-- 하단 바 -->
 <div class="bar">
   <span class="status" id="status">작성 내용은 이 브라우저에 자동 저장됩니다.</span>
+  <button class="btn-ghost" id="btn-unhide" hidden>🙈 숨김 취소 (0)</button>
   <button class="btn-ghost" id="btn-reset">전체 지우기</button>
   <button class="btn-primary" id="btn-pdf">📄 활동 1 PDF 저장</button>
 </div>
@@ -1716,14 +1754,15 @@
   }
 
   /* ── PDF 공통 헬퍼 ─────────────────────── */
-  const val = k => (document.querySelector(`[data-k="${k}"]`)?.value || "").trim();
-  const chk = k => !!document.querySelector(`[data-k="${k}"]`)?.checked;
+  const isHidden = el => !!(el && el.closest(".card")?.classList.contains("is-hidden"));
+  const val = k => { const el = document.querySelector(`[data-k="${k}"]`); return (el && !isHidden(el)) ? (el.value || "").trim() : ""; };
+  const chk = k => { const el = document.querySelector(`[data-k="${k}"]`); return !!(el && el.checked && !isHidden(el)); };
   const esc = s => String(s).replace(/[&<>]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
   const br  = s => esc(s).replace(/\n/g,"<br>");
 
   function qa(k){
     const el = document.querySelector(`[data-k="${k}"]`);
-    if(!el) return "";
+    if(!el || isHidden(el)) return "";
     const v = (el.value || "").trim();
     if(!v) return "";
     return `<div class="p-item"><p class="p-q">${esc(el.dataset.q || "")}</p><p class="p-a">${esc(v)}</p></div>`;
@@ -1740,6 +1779,7 @@
       `</tbody></table></div>`;
   }
   function scoreTable(prefix, comps){
+    if(isHidden(document.querySelector(`input[name="${prefix}_${comps[0][0]}"]`))) return "";
     const sv = scores(prefix);
     if(!sv.some(v=>v>0)) return "";
     return `<div class="p-item"><table><thead><tr><th style="width:12%">코드</th><th>항목</th><th style="width:16%">나의 점수</th></tr></thead><tbody>` +
@@ -2109,6 +2149,57 @@
   });
   lightbox.addEventListener("click", ()=>lightbox.classList.remove("on"));
 
+  /* ── 카드(퀴즈) 숨기기 / 숨김 취소 ─────── */
+  const HKEY = "keris13_hidden_v1";
+  const hideCards = Array.from(document.querySelectorAll(".lesson .card"));
+  let hiddenSet = new Set();
+  try{ hiddenSet = new Set(JSON.parse(localStorage.getItem(HKEY) || "[]")); }catch(e){}
+  const unhideBtn = document.getElementById("btn-unhide");
+
+  function saveHidden(){ try{ localStorage.setItem(HKEY, JSON.stringify([...hiddenSet])); }catch(e){} }
+  function refreshUnhideBtn(){
+    unhideBtn.hidden = hiddenSet.size === 0;
+    unhideBtn.textContent = `🙈 숨김 취소 (${hiddenSet.size})`;
+  }
+  function setHidden(card, on){
+    card.classList.toggle("is-hidden", on);
+    if(on) hiddenSet.add(card.dataset.hid); else hiddenSet.delete(card.dataset.hid);
+    saveHidden(); refreshUnhideBtn();
+  }
+  function restoreAll(){
+    if(!hiddenSet.size) return;
+    hideCards.forEach(c=>c.classList.remove("is-hidden"));
+    hiddenSet.clear(); saveHidden(); refreshUnhideBtn();
+  }
+
+  hideCards.forEach((card, i)=>{
+    const id = "h" + i;
+    card.dataset.hid = id;
+
+    const hideBtn = document.createElement("button");
+    hideBtn.type = "button"; hideBtn.className = "card-hide"; hideBtn.textContent = "숨기기";
+    hideBtn.title = "이 카드를 숨깁니다 (하단 '숨김 취소'로 되돌릴 수 있어요)";
+    hideBtn.addEventListener("click", ()=>{
+      setHidden(card, true);
+      toast("항목을 숨겼습니다. 카드의 '되돌리기' 또는 하단 '숨김 취소'로 복원할 수 있어요.");
+    });
+
+    const bar = document.createElement("div");
+    bar.className = "card-hidden-bar";
+    bar.innerHTML = `<span class="ttl">🙈 숨긴 항목 — <b>${esc((card.querySelector("h3, h2")?.textContent || "이 항목").trim())}</b></span>`;
+    const restore = document.createElement("button");
+    restore.type = "button"; restore.className = "card-restore"; restore.textContent = "되돌리기";
+    restore.addEventListener("click", ()=>setHidden(card, false));
+    bar.appendChild(restore);
+
+    card.appendChild(hideBtn);
+    card.appendChild(bar);
+    if(hiddenSet.has(id)) card.classList.add("is-hidden");
+  });
+
+  unhideBtn.addEventListener("click", ()=>{ restoreAll(); toast("숨긴 항목을 모두 되돌렸습니다."); });
+  refreshUnhideBtn();
+
   /* ── 초기화 버튼 ──────────────────────── */
   document.getElementById("btn-reset").addEventListener("click", ()=>{
     if(!confirm("모든 차시의 작성 내용을 지웁니다. 계속할까요?")) return;
@@ -2117,6 +2208,7 @@
       else el.value = "";
     });
     try{ localStorage.removeItem(KEY); }catch(e){}
+    restoreAll();
     drawRadars();
     setStatus("작성 내용은 이 브라우저에 자동 저장됩니다.");
     toast("모두 지웠습니다.");
